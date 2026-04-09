@@ -1,0 +1,3903 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Next-Day Costco Delivery</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0a0f;
+        --bg2: #111118;
+        --bg3: #16161f;
+        --glass: rgba(255, 255, 255, 0.06);
+        --glass2: rgba(255, 255, 255, 0.1);
+        --glassB: rgba(255, 255, 255, 0.11);
+        --white: #ffffff;
+        --muted: rgba(255, 255, 255, 0.5);
+        --muted2: rgba(255, 255, 255, 0.3);
+        --red: #ff4d6d;
+        --green: #4ade80;
+        --gold: #fbbf24;
+        --purple: #7c3aed;
+        --r: 14px;
+        --r2: 10px;
+        --font: 'Outfit', sans-serif;
+        --sidebar: 300px;
+        --hh: 62px; /* header height */
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--white);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* ── STARFIELD ── */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            ellipse 90% 55% at 50% -5%,
+            rgba(90, 50, 200, 0.32) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 50% 45% at 90% 100%,
+            rgba(30, 15, 90, 0.4) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse 40% 40% at 10% 85%,
+            rgba(60, 25, 130, 0.28) 0%,
+            transparent 55%
+          );
+      }
+      .stars {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+          radial-gradient(
+            1px 1px at 12% 18%,
+            rgba(255, 255, 255, 0.55) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            1px 1px at 82% 12%,
+            rgba(255, 255, 255, 0.45) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            1.5px 1.5px at 47% 65%,
+            rgba(255, 255, 255, 0.5) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            1px 1px at 68% 38%,
+            rgba(255, 255, 255, 0.4) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            1px 1px at 8% 52%,
+            rgba(255, 255, 255, 0.3) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            1px 1px at 93% 72%,
+            rgba(255, 255, 255, 0.45) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            1px 1px at 33% 22%,
+            rgba(255, 255, 255, 0.35) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            1px 1px at 77% 88%,
+            rgba(255, 255, 255, 0.4) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            1px 1px at 55% 6%,
+            rgba(255, 255, 255, 0.35) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            1px 1px at 4% 92%,
+            rgba(255, 255, 255, 0.3) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            1px 1px at 61% 45%,
+            rgba(255, 255, 255, 0.25) 0%,
+            transparent 100%
+          ),
+          radial-gradient(
+            1px 1px at 25% 78%,
+            rgba(255, 255, 255, 0.3) 0%,
+            transparent 100%
+          );
+      }
+
+      /* ── HEADER ── */
+      .hdr {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        height: var(--hh);
+        background: rgba(10, 10, 15, 0.82);
+        backdrop-filter: blur(18px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .hdr-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 0 20px;
+      }
+      .hdr-logo {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 17px;
+        font-weight: 800;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .hdr-logo .icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+      }
+      .hdr-logo .txt em {
+        color: rgba(255, 255, 255, 0.55);
+        font-style: normal;
+        font-size: 12px;
+        display: block;
+        font-weight: 400;
+        line-height: 1;
+      }
+      .search-wrap {
+        flex: 1;
+        min-width: 0;
+        max-width: 480px;
+        position: relative;
+      }
+      .search-wrap input {
+        width: 100%;
+        background: var(--glass);
+        border: 1px solid var(--glassB);
+        border-radius: 50px;
+        padding: 10px 16px 10px 40px;
+        color: #fff;
+        font-size: 14px;
+        font-family: var(--font);
+        outline: none;
+        transition: all 0.2s;
+      }
+      .search-wrap input::placeholder {
+        color: var(--muted);
+      }
+      .search-wrap input:focus {
+        background: var(--glass2);
+        border-color: rgba(255, 255, 255, 0.22);
+      }
+      .search-wrap svg {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.4;
+        pointer-events: none;
+      }
+      .hdr-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-left: auto;
+        flex-shrink: 0;
+      }
+      .lang-chip {
+        background: var(--glass);
+        border: 1px solid var(--glassB);
+        color: var(--muted);
+        font-size: 12.5px;
+        font-weight: 600;
+        padding: 5px 13px;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.18s;
+        font-family: var(--font);
+      }
+      .lang-chip.active,
+      .lang-chip:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.25);
+      }
+      .cart-btn {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-size: 13.5px;
+        font-weight: 600;
+        padding: 8px 16px 8px 12px;
+        border-radius: 50px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
+        font-family: var(--font);
+        white-space: nowrap;
+      }
+      .cart-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .cart-btn .badge {
+        background: var(--red);
+        color: #fff;
+        font-size: 10.5px;
+        font-weight: 700;
+        min-width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        padding: 0 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* ── PAGE BODY ── */
+      .page {
+        position: relative;
+        z-index: 1;
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 200px 1fr var(--sidebar);
+        grid-template-rows: auto 1fr;
+        gap: 0;
+        min-height: calc(100vh - var(--hh));
+      }
+
+      /* ── LEFT SIDEBAR: categories ── */
+      .cat-sidebar {
+        grid-column: 1;
+        grid-row: 1/3;
+        padding: 24px 16px;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        position: sticky;
+        top: var(--hh);
+        height: calc(100vh - var(--hh));
+        overflow-y: auto;
+      }
+      .cat-sidebar::-webkit-scrollbar {
+        width: 3px;
+      }
+      .cat-sidebar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+      }
+      .cat-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+        padding-left: 4px;
+      }
+      .cat-item {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 9px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--muted);
+        transition: all 0.18s;
+        margin-bottom: 2px;
+        border: 1px solid transparent;
+      }
+      .cat-item:hover {
+        background: var(--glass);
+        color: #fff;
+      }
+      .cat-item.active {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.14);
+        color: #fff;
+      }
+      .cat-item .ci-emoji {
+        font-size: 16px;
+        width: 22px;
+        text-align: center;
+      }
+      .cat-item .ci-count {
+        margin-left: auto;
+        font-size: 11px;
+        color: var(--muted2);
+        background: rgba(255, 255, 255, 0.07);
+        padding: 1px 7px;
+        border-radius: 10px;
+      }
+
+      /* ── MAIN CONTENT ── */
+      .main {
+        grid-column: 2;
+        grid-row: 1/3;
+        padding: 24px 20px;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .main-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .main-title {
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .prod-count {
+        font-size: 12px;
+        color: var(--muted);
+        margin-left: 6px;
+      }
+      .sort-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .sort-select {
+        background: var(--glass);
+        border: 1px solid var(--glassB);
+        color: #fff;
+        font-size: 12.5px;
+        padding: 6px 28px 6px 12px;
+        border-radius: 50px;
+        font-family: var(--font);
+        outline: none;
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+      .sort-select option {
+        background: #1a1a2e;
+      }
+
+      /* ── PRODUCT GRID ── */
+      .prod-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        gap: 14px;
+      }
+
+      /* ── PRODUCT CARD ── */
+      .pcard {
+        background: var(--glass);
+        border: 1px solid var(--glassB);
+        border-radius: var(--r);
+        overflow: hidden;
+        transition: all 0.22s;
+        cursor: default;
+        backdrop-filter: blur(8px);
+        display: flex;
+        flex-direction: column;
+      }
+      .pcard:hover {
+        background: var(--glass2);
+        border-color: rgba(255, 255, 255, 0.18);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+      .pcard-img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        background: rgba(255, 255, 255, 0.04);
+        display: block;
+        flex-shrink: 0;
+      }
+      .pcard-img-ph {
+        width: 100%;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.03);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 42px;
+        flex-shrink: 0;
+      }
+      .pcard-body {
+        padding: 12px 13px 14px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+      .pcard-cat {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 5px;
+      }
+      .pcard-name {
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.4;
+        color: #fff;
+        margin-bottom: 4px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 37px;
+      }
+      .pcard-spec {
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .pcard-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: auto;
+      }
+      .pcard-price {
+        font-size: 17px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1;
+      }
+      .pcard-price sup {
+        font-size: 10px;
+        vertical-align: super;
+        font-weight: 600;
+      }
+
+      /* ── ADD CONTROL ── */
+      .add-ctrl {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        flex-shrink: 0;
+      }
+      /* default: just the + button */
+      .add-ctrl .plus-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.13);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        font-family: var(--font);
+        flex-shrink: 0;
+      }
+      .add-ctrl .plus-btn:hover {
+        background: rgba(255, 255, 255, 0.22);
+        transform: scale(1.08);
+      }
+      /* qty mode: − [n] + */
+      .add-ctrl .qty-group {
+        display: none;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .add-ctrl.has-qty .plus-btn {
+        display: none;
+      }
+      .add-ctrl.has-qty .qty-group {
+        display: flex;
+      }
+      .qty-group .qb {
+        width: 30px;
+        height: 32px;
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        font-family: var(--font);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.15s;
+      }
+      .qty-group .qb:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+      .qty-group .qb.minus {
+        border-right: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .qty-group .qb.plus {
+        border-left: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .qty-group .qv {
+        min-width: 28px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--green);
+        padding: 0 2px;
+      }
+
+      /* ── RIGHT SIDEBAR: cart ── */
+      .cart-sidebar {
+        grid-column: 3;
+        grid-row: 1/3;
+        position: sticky;
+        top: var(--hh);
+        height: calc(100vh - var(--hh));
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background: var(--bg2);
+        border-left: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .cart-head {
+        padding: 18px 18px 14px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        flex-shrink: 0;
+      }
+      .cart-head h2 {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .cart-head .cart-meta {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .cart-items-wrap {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px 0;
+      }
+      .cart-items-wrap::-webkit-scrollbar {
+        width: 3px;
+      }
+      .cart-items-wrap::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+      }
+      .empty-cart {
+        padding: 40px 20px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .empty-cart .ei {
+        font-size: 38px;
+        margin-bottom: 10px;
+      }
+
+      /* cart item */
+      .ci {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        animation: sIn 0.18s ease;
+      }
+      @keyframes sIn {
+        from {
+          opacity: 0;
+          transform: translateX(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .ci-img {
+        width: 44px;
+        height: 44px;
+        border-radius: 9px;
+        object-fit: cover;
+        background: rgba(255, 255, 255, 0.05);
+        flex-shrink: 0;
+      }
+      .ci-img-ph {
+        width: 44px;
+        height: 44px;
+        border-radius: 9px;
+        background: rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+      .ci-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .ci-name {
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 2px;
+      }
+      .ci-spec {
+        font-size: 10.5px;
+        color: var(--muted);
+      }
+      .ci-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 4px;
+        flex-shrink: 0;
+      }
+      .ci-price {
+        font-size: 12.5px;
+        font-weight: 700;
+        color: var(--gold);
+      }
+      .ci-ctrl {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .cqb {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.09);
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.15s;
+      }
+      .cqb:hover {
+        background: rgba(255, 255, 255, 0.18);
+      }
+      .cqb.del:hover {
+        background: rgba(255, 77, 109, 0.25);
+        border-color: rgba(255, 77, 109, 0.4);
+        color: var(--red);
+      }
+      .cqv {
+        font-size: 12px;
+        font-weight: 700;
+        min-width: 16px;
+        text-align: center;
+        color: var(--green);
+      }
+
+      /* cart footer */
+      .cart-foot {
+        flex-shrink: 0;
+        padding: 14px 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
+        background: var(--bg2);
+      }
+      .prog-wrap {
+        margin-bottom: 12px;
+      }
+      .prog-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 5px;
+        flex-wrap: wrap;
+        gap: 3px;
+      }
+      .prog-bar {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.09);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .prog-fill {
+        height: 100%;
+        border-radius: 10px;
+        background: linear-gradient(90deg, var(--purple), var(--green));
+        transition: width 0.4s ease;
+      }
+      .free-tag {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--green);
+        background: rgba(74, 222, 128, 0.14);
+        padding: 2px 7px;
+        border-radius: 8px;
+      }
+      .sum-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12.5px;
+        color: var(--muted);
+        margin-bottom: 5px;
+      }
+      .sum-row.tot {
+        font-size: 15px;
+        font-weight: 700;
+        color: #fff;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin-top: 4px;
+      }
+      .sum-row.tot span:last-child {
+        color: var(--gold);
+      }
+      .free-ship {
+        color: var(--green);
+        font-weight: 600;
+      }
+
+      /* form */
+      .form-section {
+        padding: 0 0 4px;
+      }
+      .form-label-row {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 10px;
+        padding-top: 4px;
+      }
+      .fg {
+        margin-bottom: 9px;
+      }
+      .fg label {
+        font-size: 11.5px;
+        color: var(--muted);
+        display: block;
+        margin-bottom: 4px;
+        font-weight: 500;
+      }
+      .fg input,
+      .fg select {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.11);
+        border-radius: 10px;
+        padding: 10px 12px;
+        color: #fff;
+        font-size: 13px;
+        font-family: var(--font);
+        outline: none;
+        transition: all 0.2s;
+      }
+      .fg select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.35)' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 11px center;
+        padding-right: 30px;
+        -webkit-appearance: none;
+        appearance: none;
+        cursor: pointer;
+      }
+      .fg select option {
+        background: #1a1a2e;
+        color: #fff;
+      }
+      .fg input::placeholder {
+        color: rgba(255, 255, 255, 0.25);
+      }
+      .fg input:focus,
+      .fg select:focus {
+        background: rgba(255, 255, 255, 0.11);
+        border-color: rgba(255, 255, 255, 0.22);
+      }
+      .fg input.err,
+      .fg select.err {
+        border-color: rgba(255, 77, 109, 0.55);
+      }
+      .min-notice {
+        text-align: center;
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .min-notice.warn {
+        color: var(--gold);
+      }
+      .min-notice.good {
+        color: var(--green);
+      }
+      .co-btn {
+        width: 100%;
+        padding: 13px;
+        border-radius: 50px;
+        background: rgba(255, 255, 255, 0.13);
+        border: 1.5px solid rgba(255, 255, 255, 0.22);
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.22s;
+        font-family: var(--font);
+      }
+      .co-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-1px);
+      }
+      .co-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* ── SUCCESS ── */
+      .success-wrap {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 20px;
+        text-align: center;
+        flex: 1;
+      }
+      .success-wrap.show {
+        display: flex;
+      }
+      .success-icon {
+        font-size: 52px;
+        margin-bottom: 14px;
+        animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      @keyframes popIn {
+        from {
+          transform: scale(0);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .success-wrap h3 {
+        font-size: 19px;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+      .success-wrap p {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.65;
+        margin-bottom: 22px;
+      }
+      .success-wrap .back-btn {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        padding: 10px 24px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 13.5px;
+        font-weight: 600;
+        font-family: var(--font);
+        transition: all 0.2s;
+      }
+      .success-wrap .back-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      /* ── MOBILE CART SHEET (bottom) ── */
+      .sheet-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(6px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
+      .sheet-bg.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .sheet {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 301;
+        background: linear-gradient(180deg, #1a1a28 0%, #0e0e18 100%);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 22px 22px 0 0;
+        max-height: 90vh;
+        overflow-y: auto;
+        transform: translateY(100%);
+        transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+        padding-bottom: env(safe-area-inset-bottom, 16px);
+      }
+      .sheet.open {
+        transform: translateY(0);
+      }
+      .sheet::-webkit-scrollbar {
+        display: none;
+      }
+      .sheet-handle {
+        width: 38px;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.18);
+        margin: 13px auto 0;
+      }
+      .sheet-hdr {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      }
+      .sheet-hdr h2 {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .sheet-close {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: #fff;
+        font-size: 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .sheet-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      /* ── SPINNER ── */
+      .spinner {
+        width: 16px;
+        height: 16px;
+        border: 2.5px solid rgba(255, 255, 255, 0.2);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ── TOAST ── */
+      .toast {
+        position: fixed;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%) translateY(60px);
+        background: rgba(20, 20, 35, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: #fff;
+        font-size: 13px;
+        padding: 10px 20px;
+        border-radius: 50px;
+        z-index: 500;
+        white-space: nowrap;
+        transition: transform 0.26s ease;
+        pointer-events: none;
+        backdrop-filter: blur(12px);
+      }
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      /* ── NO RESULTS ── */
+      .no-res {
+        grid-column: 1/-1;
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--muted);
+      }
+
+      /* ── ANIMATIONS ── */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ═══════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+═══════════════════════════════════════ */
+
+      /* TABLET: hide left sidebar, keep cart sidebar */
+      @media (max-width: 1100px) {
+        .page {
+          grid-template-columns: 1fr var(--sidebar);
+        }
+        .cat-sidebar {
+          display: none;
+        }
+        .main {
+          grid-column: 1;
+          border-right: none;
+        }
+        .cart-sidebar {
+          grid-column: 2;
+        }
+        /* show horizontal tab scroll instead */
+        .tab-row {
+          display: flex !important;
+        }
+      }
+
+      /* SMALL TABLET: stack everything, bottom cart */
+      @media (max-width: 768px) {
+        :root {
+          --sidebar: 0px;
+        }
+        .page {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto auto 1fr;
+        }
+        .cat-sidebar {
+          display: none;
+        }
+        .cart-sidebar {
+          display: none;
+        } /* replaced by bottom sheet */
+        .main {
+          grid-column: 1;
+          grid-row: 1;
+          border: none;
+          padding: 16px 12px 100px;
+        }
+        .prod-grid {
+          grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+          gap: 10px;
+        }
+        .pcard-img,
+        .pcard-img-ph {
+          height: 130px;
+        }
+        /* sticky bottom cart bar */
+        .mobile-cart-bar {
+          display: flex !important;
+        }
+        /* header adjustments */
+        .hdr-logo .txt .sub {
+          display: none;
+        }
+        .search-wrap {
+          max-width: 100%;
+        }
+      }
+
+      /* MOBILE: 2 cols min */
+      @media (max-width: 480px) {
+        .hdr-inner {
+          padding: 0 12px;
+          gap: 10px;
+        }
+        .hdr-logo {
+          font-size: 15px;
+        }
+        .hdr-logo .icon {
+          width: 30px;
+          height: 30px;
+          font-size: 14px;
+        }
+        .main {
+          padding: 12px 10px 100px;
+        }
+        .prod-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 8px;
+        }
+        .pcard-img,
+        .pcard-img-ph {
+          height: 120px;
+        }
+        .pcard-body {
+          padding: 9px 10px 11px;
+        }
+        .pcard-name {
+          font-size: 12px;
+          min-height: 34px;
+        }
+        .pcard-price {
+          font-size: 15px;
+        }
+      }
+
+      /* WIDE: bigger grid */
+      @media (min-width: 1300px) {
+        .prod-grid {
+          grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+        }
+      }
+
+      /* ── TAB ROW (visible on tablet) ── */
+      .tab-row {
+        display: none; /* shown on tablet via media query above */
+        overflow-x: auto;
+        scrollbar-width: none;
+        padding: 0 20px 14px;
+        gap: 7px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        margin-bottom: 16px;
+      }
+      .tab-row::-webkit-scrollbar {
+        display: none;
+      }
+      .tab-row .tab {
+        background: var(--glass);
+        border: 1px solid var(--glassB);
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 500;
+        padding: 6px 14px;
+        border-radius: 50px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.18s;
+        font-family: var(--font);
+        flex-shrink: 0;
+      }
+      .tab-row .tab:hover {
+        background: var(--glass2);
+        color: #fff;
+      }
+      .tab-row .tab.active {
+        background: rgba(255, 255, 255, 0.16);
+        border-color: rgba(255, 255, 255, 0.25);
+        color: #fff;
+      }
+
+      /* ── MOBILE CART BAR ── */
+      .mobile-cart-bar {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        padding: 10px 16px;
+        background: rgba(10, 10, 20, 0.92);
+        backdrop-filter: blur(16px);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .mobile-cart-bar button {
+        width: 100%;
+        padding: 14px;
+        border-radius: 50px;
+        background: rgba(255, 255, 255, 0.13);
+        border: 1.5px solid rgba(255, 255, 255, 0.22);
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-family: var(--font);
+        transition: all 0.2s;
+      }
+      .mobile-cart-bar button:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stars"></div>
+
+    <!-- HEADER -->
+    <header class="hdr">
+      <div class="hdr-inner">
+        <div class="hdr-logo">
+          <div class="icon">🛒</div>
+          <div class="txt">
+            <span>Costco Delivery</span>
+            <em id="hdSubtitle">Next-Day · Order by 10PM</em>
+          </div>
+        </div>
+        <div class="search-wrap">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            stroke-width="2.5"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          <input type="text" id="searchInput" placeholder="Search products…" />
+        </div>
+        <div class="hdr-right">
+          <button class="lang-chip active" id="btnEN" onclick="setLang('en')">
+            EN
+          </button>
+          <button class="lang-chip" id="btnZH" onclick="setLang('zh')">
+            中文
+          </button>
+          <button class="cart-btn" id="cartBtnTop" onclick="openSheet()">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path
+                d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+              />
+            </svg>
+            <span id="cartBtnLabel">Cart</span>
+            <span class="badge" id="cartBadge">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE LAYOUT -->
+    <div class="page">
+      <!-- LEFT SIDEBAR: categories -->
+      <aside class="cat-sidebar" id="catSidebar"></aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="main">
+        <!-- tab row for tablet -->
+        <div class="tab-row" id="tabRow"></div>
+        <div class="main-header">
+          <div>
+            <span class="main-title" id="mainTitle">All Products</span>
+            <span class="prod-count" id="prodCount"></span>
+          </div>
+          <div class="sort-wrap">
+            <select
+              class="sort-select"
+              id="sortSel"
+              onchange="renderProducts()"
+            >
+              <option value="default" id="sortDefault">Default</option>
+              <option value="price-asc" id="sortAsc">Price ↑</option>
+              <option value="price-desc" id="sortDesc">Price ↓</option>
+              <option value="name" id="sortName">A–Z</option>
+            </select>
+          </div>
+        </div>
+        <div class="prod-grid" id="grid"></div>
+      </main>
+
+      <!-- RIGHT SIDEBAR: cart -->
+      <aside class="cart-sidebar" id="cartSidebar">
+        <div
+          id="sidebarMain"
+          style="display: flex; flex-direction: column; height: 100%"
+        >
+          <div class="cart-head">
+            <h2 id="sCartTitle">My Cart</h2>
+            <div class="cart-meta" id="sCartMeta">0 items</div>
+          </div>
+          <div class="cart-items-wrap" id="sCartItems"></div>
+          <div class="cart-foot" id="sCartFoot" style="display: none">
+            <div class="prog-wrap">
+              <div class="prog-meta">
+                <span id="sProgLbl">Free delivery progress</span>
+                <span id="sProgAmt"></span>
+              </div>
+              <div class="prog-bar">
+                <div class="prog-fill" id="sProgFill" style="width: 0%"></div>
+              </div>
+            </div>
+            <div class="sum-row">
+              <span id="sSubtotalLbl">Subtotal</span
+              ><span id="sSubtotalVal"></span>
+            </div>
+            <div class="sum-row">
+              <span id="sDeliveryLbl">Delivery</span
+              ><span id="sDeliveryVal"></span>
+            </div>
+            <div class="sum-row tot">
+              <span id="sTotalLbl">Total</span><span id="sTotalVal"></span>
+            </div>
+            <div class="form-section" style="margin-top: 12px">
+              <div class="form-label-row" id="sFormTitle">Delivery Info</div>
+              <div class="fg">
+                <label id="sLblName">Full Name</label
+                ><input type="text" id="sFName" placeholder="John Smith" />
+              </div>
+              <div class="fg">
+                <label id="sLblPhone">Phone</label
+                ><input
+                  type="tel"
+                  id="sFPhone"
+                  placeholder="+1 (604) 000-0000"
+                />
+              </div>
+              <div class="fg">
+                <label id="sLblAddr">Address</label>
+                <select id="sFAddr">
+                  <option value="" disabled selected id="sAddrPH">
+                    Select address…
+                  </option>
+                  <option value="addr1" id="sAddrOpt1">
+                    📍 Address 1 – by 11:00 AM
+                  </option>
+                  <option value="addr2" id="sAddrOpt2">
+                    📍 Address 2 – by 4:00 PM
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="min-notice" id="sNotice"></div>
+            <button class="co-btn" id="sCoBtn" onclick="checkout('s')">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+              <span id="sCoBtnLabel">Place Order</span>
+            </button>
+          </div>
+        </div>
+        <!-- success state sidebar -->
+        <div class="success-wrap" id="sSuccess">
+          <div class="success-icon">🎉</div>
+          <h3 id="sSuccessTitle">Order Received!</h3>
+          <p id="sSuccessBody">We'll confirm via phone shortly.</p>
+          <button class="back-btn" onclick="closeSuccess('s')" id="sSuccessBtn">
+            Continue Shopping
+          </button>
+        </div>
+      </aside>
+    </div>
+    <!-- /page -->
+
+    <!-- MOBILE CART BAR -->
+    <div class="mobile-cart-bar" id="mobileCartBar">
+      <button onclick="openSheet()">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <circle cx="9" cy="21" r="1" />
+          <circle cx="20" cy="21" r="1" />
+          <path
+            d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+          />
+        </svg>
+        <span id="mCartLabel">View Cart</span>
+        <span class="badge" id="mCartBadge">0</span>
+      </button>
+    </div>
+
+    <!-- MOBILE SHEET -->
+    <div class="sheet-bg" id="sheetBg" onclick="closeSheet()"></div>
+    <div class="sheet" id="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-hdr">
+        <h2 id="mSheetTitle">My Cart</h2>
+        <button class="sheet-close" onclick="closeSheet()">✕</button>
+      </div>
+      <!-- sheet main -->
+      <div id="sheetMain">
+        <div id="mCartItems" style="padding: 6px 0"></div>
+        <div id="mSummaryWrap" style="display: none; padding: 0 16px 20px">
+          <div class="prog-wrap" style="margin-top: 10px">
+            <div class="prog-meta">
+              <span id="mProgLbl">Free delivery progress</span
+              ><span id="mProgAmt"></span>
+            </div>
+            <div class="prog-bar">
+              <div class="prog-fill" id="mProgFill" style="width: 0%"></div>
+            </div>
+          </div>
+          <div
+            style="
+              background: rgba(255, 255, 255, 0.05);
+              border-radius: 12px;
+              padding: 12px 14px;
+              margin-top: 10px;
+            "
+          >
+            <div class="sum-row">
+              <span id="mSubtotalLbl">Subtotal</span
+              ><span id="mSubtotalVal"></span>
+            </div>
+            <div class="sum-row">
+              <span id="mDeliveryLbl">Delivery</span
+              ><span id="mDeliveryVal"></span>
+            </div>
+            <div class="sum-row tot">
+              <span id="mTotalLbl">Total</span><span id="mTotalVal"></span>
+            </div>
+          </div>
+          <div class="form-section" style="margin-top: 14px">
+            <div class="form-label-row" id="mFormTitle">Delivery Info</div>
+            <div class="fg">
+              <label id="mLblName">Full Name</label
+              ><input type="text" id="mFName" placeholder="John Smith" />
+            </div>
+            <div class="fg">
+              <label id="mLblPhone">Phone</label
+              ><input type="tel" id="mFPhone" placeholder="+1 (604) 000-0000" />
+            </div>
+            <div class="fg">
+              <label id="mLblAddr">Address</label>
+              <select id="mFAddr">
+                <option value="" disabled selected id="mAddrPH">
+                  Select address…
+                </option>
+                <option value="addr1" id="mAddrOpt1">
+                  📍 Address 1 – by 11:00 AM
+                </option>
+                <option value="addr2" id="mAddrOpt2">
+                  📍 Address 2 – by 4:00 PM
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="min-notice" id="mNotice"></div>
+          <button
+            class="co-btn"
+            id="mCoBtn"
+            onclick="checkout('m')"
+            style="margin-top: 8px"
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+            <span id="mCoBtnLabel">Place Order</span>
+          </button>
+        </div>
+      </div>
+      <!-- sheet success -->
+      <div class="success-wrap" id="mSuccess" style="min-height: 300px">
+        <div class="success-icon">🎉</div>
+        <h3 id="mSuccessTitle">Order Received!</h3>
+        <p id="mSuccessBody">We'll confirm via phone shortly.</p>
+        <button class="back-btn" onclick="closeSuccess('m')" id="mSuccessBtn">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      // ── CONFIG ──────────────────────────────────────────────────────────────────
+      const APPS_SCRIPT_URL =
+        'https://script.google.com/macros/library/d/1FDF37JqOQ_lWArD541w72AWg6lZJCozFKnSib4g4x1ERy-hG1LKJDwrc/2';
+      const IMG_BASE = './images/';
+
+      // ── IMAGE MAP ────────────────────────────────────────────────────────────────
+      const imgMap = {
+        1: 'Tropicana_Orange_Juice_Bottle.jpg',
+        2: null,
+        3: 'Tim_Hortons_Original_Blend_Coffee.jpg',
+        4: 'Kirkland_Signature_Free_Run_Hard_Boiled_Egg.jpg',
+        5: 'Sensible_Portions_Garden_Veggie_Straws.jpg',
+        6: 'Gala_Apple_Bag.jpg',
+        7: 'Healthy_Choice_Greek_Yogurt_Bars.jpg',
+        8: null,
+        9: 'Inno_Foods_White_Choc_Blueberry.jpg',
+        10: 'Love_Me_Sweet_Mille_Crepe_Cake.jpg',
+        11: 'Maison_Perrier_Carbonated_Natural_Spring_Water.jpg',
+        12: 'Kirkland_Signature_Sugar_Free_Organic_Coconut_Water.jpg',
+        13: 'Kirkland_Tiramisu_Scoop_Cake.jpg',
+        14: 'Samyang_Buldak_Carbonara_Ramen.jpg',
+        15: 'Pintys_Buffalo_Chicken_Fling.jpg',
+        16: 'Paul_Brassac_Organic_Sparkling_Juice.jpg',
+        17: 'Grown_Right_Mango_Orange_Juice.jpg',
+        18: 'Diana_Peach_Slices.jpg',
+        19: 'Cotton_Candy_Grapes.jpg',
+        20: 'Kirkland_Signature_Real_Whipped_Cream.jpg',
+        21: 'Organic_Grape_Tomatoes.jpg',
+        22: 'Clementines.jpg',
+        23: 'Avocados.jpg',
+        24: 'Gala_Apple_Bag.jpg',
+        25: 'Gala_Apple_Bag.jpg',
+        26: 'Sweet_Creations_Palm_Leaves.jpg',
+        27: 'Liberté_2_Plain_Yogurt.jpg',
+        28: 'Chapman_s_Vanilla_Ice_Cream.jpg',
+        29: 'Artisan_Baguettes.jpg',
+        30: 'Amos_Peelerz_Gummy_Mango.jpg',
+        31: 'Frito_Lay_Lunch_Variety_Pack.jpg',
+        32: 'Kirkland_Signature_Sparkling_Beverage_Variety_Pack.jpg',
+        33: null,
+        34: 'Kirkland_Signature_0_Greek_Yogurt.jpg',
+        35: 'Kirkland_Signature_Sparkling_Beverage_Variety_Pack.jpg',
+        36: 'Schaaf_Foods_Golden__Marble_Cakes.jpg',
+        37: 'Cuisine_Adventures_French_Onion_Soup.jpg',
+        38: 'HäagenDazs_Vanilla_Almond_Bars.jpg',
+        39: 'Natures_Touch_Frozen_Mangoes.jpg',
+        40: 'Hot_House_Strawberries.jpg',
+        41: 'Organic_Blueberries.jpg',
+        42: 'Honeycrisp_Apples.jpg',
+        43: null,
+        44: 'Brookside_Acai_Dark_Chocolate.jpg',
+        45: 'Pepperidge_Farm_Goldfish_Cheddar.jpg',
+        46: 'Lotte_Pepero_Assorted.jpg',
+        47: 'Eska_Canned_Lemon_Carbonated_Spring_Water.jpg',
+        48: 'Sabatassos_Pizza_Singles.jpg',
+        49: 'Casablanca_Dubai_Ice_Cream_Bar.jpg',
+        50: 'Island_Way_Assorted_Fruit_Sorbet.jpg',
+        51: 'Fuze_Lemon_Iced_Tea.jpg',
+        52: 'Kirkland_Signature_Bacon__Cheese_Sous_Vide_Egg_Bites.jpg',
+        53: 'Natures_Garden_Yoggies_Mixed_Berry.jpg',
+        54: 'Unreal_Dark_Choco_Coconut_Bar.jpg',
+        55: 'Copper_Kettle_Pistachio_Clusters.jpg',
+        56: 'Doritos_Nacho_Cheese_Tortilla_Chips.jpg',
+        57: 'Langers_Mango_Nectar.jpg',
+        58: 'Tomatoes_on_the_Vine.jpg',
+        59: 'Grape_Tomatoes.jpg',
+        60: 'TwoBite_Glazed_Cinnamon_Rolls.jpg',
+        61: 'Treasure_Mills_Banana_Chocolate_Chip.jpg',
+        62: 'Bel_Gaufre_Waffles.jpg',
+        63: 'Ace_Bakery_Mini_Cheese_Croissant.jpg',
+        64: 'Kirkland_Mini_Chocolatines.jpg',
+        65: 'Fanta_Variety_Pack.jpg',
+        66: 'Nestlé_Assorted_Bars.jpg',
+        67: 'Kirkland_Signature_Carbonated_Spring_Water.jpg',
+        68: 'Kirkland_Signature_Roasted_Almonds.jpg',
+        69: 'TC_Foods_Chinese_Burger.jpg',
+        70: 'Natrel_Organic_Fudge_Bars.jpg',
+        71: 'Nestlé_Coffee_Mate.jpg',
+        72: 'Almond_Breeze_Unsweetened_Original_Almond_Milk.jpg',
+        73: 'Grown_Right_Orange_Juice.jpg',
+        74: 'Blueberries.jpg',
+        75: null,
+        76: 'Kirkland_Signature_Colombian_Coffee.jpg',
+        77: 'Kirkland_Signature_Decaffeinated_Coffee.jpg',
+        78: 'Kirkland_Signature_Ice_Cream_Bars.jpg',
+        79: 'Kirkland_Signature_Matcha_Blend_Japanese_Green_Tea_Bags.jpg',
+        80: 'Rougemont_Apple_Juice.jpg',
+        81: 'Kirkland_Signature_Hazelnut_Spread.jpg',
+        82: 'Kirkland_Signature_100_Pure_Maple_Syrup.jpg',
+        83: 'Pepsi.jpg',
+        84: 'Pepsi_Zero_Sugar.jpg',
+        85: 'Diet_Pepsi.jpg',
+        86: 'Huer_Hero_Probiotic_Gummies.jpg',
+        87: 'Monster_Energy_Ultra_Zero_Sugar_Variety_Energy_Drink.jpg',
+        88: 'Poppi_Classic_Faves.jpg',
+        89: 'Folgers_Classic_Roast_Ground_Coffee.jpg',
+        90: 'Gatorade_Sports_Drink.jpg',
+        91: 'Gatorade_Zero.jpg',
+        92: 'Kirkland_Signature_Pistachios.jpg',
+        93: 'Kirkland_Organic_Kombucha.jpg',
+        94: 'Well_PWR_Greens.jpg',
+        95: 'Nestlé_Drumstick_Variety_Pack.jpg',
+        96: 'Traditions_Vanilla_Mega_Sandwich.jpg',
+        97: 'Perrier_Carbonated_Natural_Spring_Water_Sleek_Cans.jpg',
+        98: 'Oasis_100_Orange_Juice.jpg',
+        99: 'RANA_Beef__Short_Rib_Lasagna.jpg',
+        100: 'Kirkland_Tuxedo_Cake.jpg',
+        101: 'Kirkland_Caramel_Smore_Cluster.jpg',
+        102: 'Don_Simon_Orange_Juice.jpg',
+        103: 'Kirkland_Signature_0_Greek_Yogurt.jpg',
+        104: 'Nestea_Lemon_Iced_Tea.jpg',
+        105: 'Kirkland_Signature_Organic_Vanilla_Almond_Beverage.jpg',
+        106: 'Kirkland_Signature_Organic_Original_Almond_Beverage.jpg',
+        107: 'Freshn_Pure_Pineapple_Burst.jpg',
+        108: 'Kirkland_Signature_Natural_Peanut_Butter.jpg',
+        109: 'Sable_Black_Grapes.jpg',
+        110: 'Red_Seedless_Grapes.jpg',
+        111: 'Green_Seadless_Grapes.jpg',
+        112: 'Chicken_pot_pie.jpg',
+        113: 'Maison_Isabelle_Sliced_Cake.jpg',
+        114: 'Kirkland_Chocolate_Chunk_Cookies.jpg',
+        115: 'iÖGO_0_Yogurt.jpg',
+        116: 'Stonefire_Naan_Dippers.jpg',
+        117: 'Ruffles_All_Dressed_Flavored_Potato_Chips.jpg',
+        118: 'Organic_Black_Oyster_Mushrooms.jpg',
+        119: 'Raspberries.jpg',
+        120: 'Sweet_Karoline_Blackberries.jpg',
+        121: 'Plums.jpg',
+        122: null,
+        123: 'Double_Chocolate_Muffins.jpg',
+        124: 'Cranberry_Orange_Muffins.jpg',
+        125: 'Blueberry_Muffins.jpg',
+        126: 'Banana_Walnut_Muffins.jpg',
+        127: 'Golden_Pineapple.jpg',
+        128: 'Sealtest_35_Whipping_Cream.jpg',
+        129: 'Kirkland_Signature_Natural_Spring_Water_Pack.jpg',
+        130: null,
+        131: 'Swiss_Delice_Dark_Chocolate_72.jpg',
+        132: 'bubly_Variety_Pack_Sparkling_Water.jpg',
+        133: 'DOSE_Ginger__Turmeric.jpg',
+        134: 'Limoncello_Mascaprone.jpg',
+        135: 'Kirkland_Signature_Variety_Snacking_Nuts.jpg',
+        136: 'La_Petite_Bretonne_Madeleines_Pure_Butter.jpg',
+        137: 'Ocean_Spray_100_Cranberry_Juice_Blend.jpg',
+        138: 'Kirkland_Signature_Pepperoni_Pizza.jpg',
+        139: 'Nestlé_Kit_Kat_Bars.jpg',
+        140: 'IMei_Mango_Boba_Ice_Bars.jpg',
+        141: 'Nestlé_KitKat_F1_Race_Car.jpg',
+        142: 'Chocovia_Dubai_Pistachio_Choco.jpg',
+        143: 'Kashi_Organic_Fruit_Bar.jpg',
+        144: 'Lotte_Zero_Peach_Kiwi_Yuzu.jpg',
+        145: 'Kirkland_Unsalted_Cashews.jpg',
+        146: 'Kirkland_Whole_Cashews.jpg',
+        147: 'illy_Fine_Ground_Coffee_Dark_Roast.jpg',
+        148: 'T_G_I_Fridays_Potato_Skins_Cheddar__Bacon.jpg',
+        149: 'Synear_Panda_Buns_with_Custard_Filling.jpg',
+        150: 'Kraft_Peanut_Butter_Ice_Cream_Bar.jpg',
+        151: 'Le_Glacier_Bilboquet_Mango_Sorbet_Bars.jpg',
+        152: 'Kirkland_Signature_Big_Red_Cups.jpg',
+        153: 'Cara_Cara_Oranges_Bag.jpg',
+        154: 'Kirkland_Homestyle_Apple_Pie.jpg',
+        155: 'CocaCola_Zero_Sugar.jpg',
+        156: 'Diet_Coke.jpg',
+        157: 'Coke.jpg',
+        158: 'Canada_Dry_Ginger_Ale.jpg',
+        159: 'Kirkland_Signature_Organic_Soy_Beverage.jpg',
+        160: 'Reser_s_Main_St__Bistro_Baked_Scalloped_Potatoes.jpg',
+        161: 'Green_Kiwi_Product_of_Greece.jpg',
+        162: 'Natrel_10_Dairy_Creamer.jpg',
+        163: 'Whole_White_Mushrooms.jpg',
+        164: 'Kartago_Khidri_Dates.jpg',
+        165: 'Good_Moood_Farm_3_25_Kefir.jpg',
+        166: 'Tradition_Apple_Juice.jpg',
+        167: 'Lays_Classic_Potato_Chips.jpg',
+        168: 'Cheetos_Cheesy_Bacon_Puffs.jpg',
+        169: 'Elegant_Balkan_Yogurt_5_9.jpg',
+        170: 'Green_Onions.jpg',
+        171: 'Yellow_Nectarines.jpg',
+        172: 'Brioche_Buns.jpg',
+        173: 'All_Butter_Croissants.jpg',
+        174: 'Bananas.jpg',
+        175: 'Authentic_Asia_Shrimp_Wonton_Ramen.jpg',
+        176: 'Jones_Soda_Fallout_Sunset_Sarsaparilla.jpg',
+        177: 'Thats_It_Mini_Probiotic_Fruit_Bars.jpg',
+        178: 'Kirkland_Signature_Large_Organic_Eggs.jpg',
+        179: null,
+        180: 'OMGI_Almond_Toffee_Clusters.jpg',
+        181: 'Green_Valley_Large_Free_Range.jpg',
+        182: 'Kirkland_Braided_Apple_Turnovers.jpg',
+        183: 'Mini_Watermelon.jpg',
+        184: 'Melona_Melon_Mango_Strawberry.jpg',
+        185: 'Kirkland_Signature_Large_Free_Run.jpg',
+        186: 'Natrel_Chocolate_Milk_Pack.jpg',
+        187: 'Natrel_2_Dairy_Milker.jpg',
+        188: 'Laiterie_LOutaouais_Chocolate_Milk_2.jpg',
+        189: 'Sealtest_3_25_Homogenized_Milk.jpg',
+        190: 'Sealtest_Milk_2.jpg',
+        191: 'Sealtest_Milk_1.jpg',
+        192: 'Kirkland_Signature_2_Organic_Milk.jpg',
+        193: null,
+        194: 'Natrel_1_FineFiltered_Milk.jpg',
+        195: 'Natrel_2_FineFiltered_Milk.jpg',
+        196: 'Natrel_Plus_2_Milk.jpg',
+        197: 'Swiss_Delice_Milk_Chocolate.jpg',
+      };
+
+      const catEmoji = {
+        Beverages: '🧃',
+        'Coffee & Tea': '☕',
+        Snacks: '🍿',
+        Produce: '🥦',
+        'Dairy & Eggs': '🥛',
+        Frozen: '🧊',
+        Bakery: '🥐',
+        Pantry: '🥫',
+        Seafood: '🦐',
+        Meat: '🍗',
+      };
+      const catCN = {
+        All: '全部',
+        Beverages: '饮品',
+        'Coffee & Tea': '咖啡茶',
+        Snacks: '零食',
+        Produce: '生鲜',
+        'Dairy & Eggs': '乳品蛋',
+        Frozen: '冷冻',
+        Bakery: '烘焙',
+        Pantry: '干货',
+        Seafood: '海鲜',
+        Meat: '肉类',
+      };
+
+      // ── PRODUCTS ─────────────────────────────────────────────────────────────────
+      const products = [
+        {
+          id: 1,
+          name: 'Tropicana Orange Juice',
+          spec: '3x1.36L',
+          price: 14.58,
+          cat: 'Beverages',
+        },
+        {
+          id: 2,
+          name: 'Shrimp Cocktail Tail On',
+          spec: '0.84kg',
+          price: 29.45,
+          cat: 'Seafood',
+        },
+        {
+          id: 3,
+          name: 'Tim Hortons Original Blend Coffee',
+          spec: '1.36 kg',
+          price: 38.49,
+          cat: 'Coffee & Tea',
+        },
+        {
+          id: 4,
+          name: 'Kirkland Free Run Hard Boiled Egg',
+          spec: '16 packs of 2 eggs',
+          price: 20.69,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 5,
+          name: 'Sensible Portions Garden Veggie Straws',
+          spec: '475g',
+          price: 8.04,
+          cat: 'Snacks',
+        },
+        {
+          id: 6,
+          name: 'Cosmic Crisp Apples',
+          spec: '2.27kg',
+          price: 12.64,
+          cat: 'Produce',
+        },
+        {
+          id: 7,
+          name: 'Healthy Choice Greek Yogurt Bars',
+          spec: '14 x 80ml',
+          price: 13.79,
+          cat: 'Frozen',
+        },
+        {
+          id: 8,
+          name: 'Super Coffee Protein Shake',
+          spec: '18 x 330mL',
+          price: 44.84,
+          cat: 'Beverages',
+        },
+        {
+          id: 9,
+          name: 'Inno Foods White Choc Blueberry',
+          spec: '510g',
+          price: 14.94,
+          cat: 'Snacks',
+        },
+        {
+          id: 10,
+          name: 'Love Me Sweet Mille Crepe Cake',
+          spec: '735g',
+          price: 28.74,
+          cat: 'Bakery',
+        },
+        {
+          id: 11,
+          name: 'Maison Perrier Sparkling Water',
+          spec: '24 x 500mL',
+          price: 28.74,
+          cat: 'Beverages',
+        },
+        {
+          id: 12,
+          name: 'Kirkland Coconut Water Sugar Free',
+          spec: '9 x 1L',
+          price: 28.74,
+          cat: 'Beverages',
+        },
+        {
+          id: 13,
+          name: 'Kirkland Tiramisu Scoop Cake',
+          spec: '1.500kg',
+          price: 28.74,
+          cat: 'Bakery',
+        },
+        {
+          id: 14,
+          name: 'Samyang Buldak Carbonara Ramen',
+          spec: '6x105g',
+          price: 17.24,
+          cat: 'Pantry',
+        },
+        {
+          id: 15,
+          name: "Pinty's Buffalo Chicken Fling",
+          spec: '907g',
+          price: 17.24,
+          cat: 'Frozen',
+        },
+        {
+          id: 16,
+          name: 'Paul Brassac Organic Sparkling Juice',
+          spec: '3 x 750ml',
+          price: 11.49,
+          cat: 'Beverages',
+        },
+        {
+          id: 17,
+          name: 'Grown Right Mango Orange Juice',
+          spec: '2 x 1.89L',
+          price: 11.49,
+          cat: 'Beverages',
+        },
+        {
+          id: 18,
+          name: 'Diana Peach Slices',
+          spec: '3 x 720mL',
+          price: 11.49,
+          cat: 'Pantry',
+        },
+        {
+          id: 19,
+          name: 'Cotton Candy Grapes',
+          spec: '907g',
+          price: 11.49,
+          cat: 'Produce',
+        },
+        {
+          id: 20,
+          name: 'Kirkland Real Whipped Cream',
+          spec: '2 x 400g',
+          price: 11.49,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 21,
+          name: 'Organic Grape Tomatoes',
+          spec: '900g',
+          price: 11.49,
+          cat: 'Produce',
+        },
+        {
+          id: 22,
+          name: 'Clementines',
+          spec: 'Product of Morocco',
+          price: 11.49,
+          cat: 'Produce',
+        },
+        {
+          id: 23,
+          name: 'Avocados',
+          spec: 'Pack of 6',
+          price: 11.49,
+          cat: 'Produce',
+        },
+        {
+          id: 24,
+          name: 'Smitten Apples',
+          spec: '2.27kg',
+          price: 11.49,
+          cat: 'Produce',
+        },
+        {
+          id: 25,
+          name: 'Gala Apples',
+          spec: '2.72kg',
+          price: 11.49,
+          cat: 'Produce',
+        },
+        {
+          id: 26,
+          name: 'Sweet Creations Palm Leaves',
+          spec: '500g',
+          price: 11.49,
+          cat: 'Bakery',
+        },
+        {
+          id: 27,
+          name: 'Liberté 2% Plain Yogurt',
+          spec: '2 x 1kg',
+          price: 8.61,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 28,
+          name: "Chapman's Vanilla Ice Cream",
+          spec: '2L',
+          price: 8.61,
+          cat: 'Frozen',
+        },
+        {
+          id: 29,
+          name: 'Artisan Baguettes',
+          spec: 'Pack',
+          price: 6.89,
+          cat: 'Bakery',
+        },
+        {
+          id: 30,
+          name: 'Amos Peelerz Gummy Mango',
+          spec: '34 x 30g',
+          price: 11.47,
+          cat: 'Snacks',
+        },
+        {
+          id: 31,
+          name: 'Frito Lay Lunch Variety Pack',
+          spec: '54 x 28g',
+          price: 28.64,
+          cat: 'Snacks',
+        },
+        {
+          id: 32,
+          name: 'San Pellegrino Sparkling Water',
+          spec: '15 x 750mL',
+          price: 28.62,
+          cat: 'Beverages',
+        },
+        {
+          id: 33,
+          name: 'Le Chic Patissier French Macarons',
+          spec: '468g (36 count)',
+          price: 21.84,
+          cat: 'Bakery',
+        },
+        {
+          id: 34,
+          name: 'Kirkland Greek Yogurt 3%',
+          spec: '24 x 100g',
+          price: 18.96,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 35,
+          name: 'Kirkland Flavoured Sparkling Water',
+          spec: '24 x 503mL',
+          price: 18.96,
+          cat: 'Beverages',
+        },
+        {
+          id: 36,
+          name: 'Schaaf Foods Golden & Marble Cakes',
+          spec: '3 x 375g',
+          price: 11.37,
+          cat: 'Bakery',
+        },
+        {
+          id: 37,
+          name: 'Cuisine Adventures French Onion Soup',
+          spec: '6 x 285g',
+          price: 16.09,
+          cat: 'Pantry',
+        },
+        {
+          id: 38,
+          name: 'Häagen-Dazs Vanilla Almond Bars',
+          spec: '9 x 88ml',
+          price: 16.09,
+          cat: 'Frozen',
+        },
+        {
+          id: 39,
+          name: "Nature's Touch Frozen Mangoes",
+          spec: '2kg',
+          price: 16.09,
+          cat: 'Frozen',
+        },
+        {
+          id: 40,
+          name: 'Hot House Strawberries',
+          spec: '794g',
+          price: 16.09,
+          cat: 'Produce',
+        },
+        {
+          id: 41,
+          name: 'Organic Blueberries',
+          spec: '510g',
+          price: 16.09,
+          cat: 'Produce',
+        },
+        {
+          id: 42,
+          name: 'Honeycrisp Apples',
+          spec: '2.49kg',
+          price: 16.09,
+          cat: 'Produce',
+        },
+        {
+          id: 43,
+          name: 'Kirkland Variety Donuts',
+          spec: '580g',
+          price: 16.09,
+          cat: 'Bakery',
+        },
+        {
+          id: 44,
+          name: 'Brookside Acai Dark Chocolate',
+          spec: '850g',
+          price: 16.09,
+          cat: 'Snacks',
+        },
+        {
+          id: 45,
+          name: 'Pepperidge Farm Goldfish Cheddar',
+          spec: '1.64kg',
+          price: 16.09,
+          cat: 'Snacks',
+        },
+        {
+          id: 46,
+          name: 'Lotte Pepero Assorted',
+          spec: '405g',
+          price: 16.09,
+          cat: 'Snacks',
+        },
+        {
+          id: 47,
+          name: 'Eska Lemon Carbonated Spring Water',
+          spec: '24 x 355mL',
+          price: 13.21,
+          cat: 'Beverages',
+        },
+        {
+          id: 48,
+          name: "Sabatasso's Pizza Singles",
+          spec: '12 x 103g',
+          price: 20.69,
+          cat: 'Frozen',
+        },
+        {
+          id: 49,
+          name: 'Casablanca Dubai Ice Cream Bar',
+          spec: '10 x 70ml',
+          price: 20.69,
+          cat: 'Frozen',
+        },
+        {
+          id: 50,
+          name: 'Island Way Assorted Fruit Sorbet',
+          spec: '1024ml',
+          price: 20.69,
+          cat: 'Frozen',
+        },
+        {
+          id: 51,
+          name: 'Fuze Lemon Iced Tea',
+          spec: '32 x 341mL',
+          price: 20.69,
+          cat: 'Beverages',
+        },
+        {
+          id: 52,
+          name: 'Kirkland Bacon & Cheese Egg Bites',
+          spec: '595g',
+          price: 20.69,
+          cat: 'Frozen',
+        },
+        {
+          id: 53,
+          name: "Nature's Garden Yoggies Mixed Berry",
+          spec: '30 x 20g',
+          price: 20.69,
+          cat: 'Snacks',
+        },
+        {
+          id: 54,
+          name: 'Unreal Dark Choco Coconut Bar',
+          spec: '435g',
+          price: 20.69,
+          cat: 'Snacks',
+        },
+        {
+          id: 55,
+          name: 'Copper Kettle Pistachio Clusters',
+          spec: '448g',
+          price: 20.69,
+          cat: 'Snacks',
+        },
+        {
+          id: 56,
+          name: 'Doritos Nacho Cheese',
+          spec: '730g',
+          price: 10.34,
+          cat: 'Snacks',
+        },
+        {
+          id: 57,
+          name: 'Langers Mango Nectar',
+          spec: '3.8L',
+          price: 10.34,
+          cat: 'Beverages',
+        },
+        {
+          id: 58,
+          name: 'Tomatoes on the Vine',
+          spec: '1.36kg',
+          price: 10.34,
+          cat: 'Produce',
+        },
+        {
+          id: 59,
+          name: 'Grape Tomatoes',
+          spec: '900g',
+          price: 10.34,
+          cat: 'Produce',
+        },
+        {
+          id: 60,
+          name: 'Two-Bite Glazed Cinnamon Rolls',
+          spec: '1.036kg',
+          price: 10.34,
+          cat: 'Bakery',
+        },
+        {
+          id: 61,
+          name: 'Treasure Mills Banana Choc Chip',
+          spec: '800g',
+          price: 10.34,
+          cat: 'Bakery',
+        },
+        {
+          id: 62,
+          name: 'Bel Gaufre Waffles',
+          spec: '12 x 70g',
+          price: 10.34,
+          cat: 'Bakery',
+        },
+        {
+          id: 63,
+          name: 'Ace Bakery Mini Cheese Croissant',
+          spec: '560g',
+          price: 10.34,
+          cat: 'Bakery',
+        },
+        {
+          id: 64,
+          name: 'Kirkland Mini Chocolatines',
+          spec: 'Pack',
+          price: 10.34,
+          cat: 'Bakery',
+        },
+        {
+          id: 65,
+          name: 'Fanta Variety Pack',
+          spec: '24 x 355mL',
+          price: 15.97,
+          cat: 'Beverages',
+        },
+        {
+          id: 66,
+          name: 'Nestlé Assorted Bars',
+          spec: '1.08kg',
+          price: 25.29,
+          cat: 'Snacks',
+        },
+        {
+          id: 67,
+          name: 'Kirkland Carbonated Spring Water',
+          spec: '24 x 500mL',
+          price: 22.41,
+          cat: 'Beverages',
+        },
+        {
+          id: 68,
+          name: 'Kirkland Roasted Almonds',
+          spec: '1.13kg',
+          price: 22.41,
+          cat: 'Snacks',
+        },
+        {
+          id: 69,
+          name: 'TC Foods Chinese Burger',
+          spec: '10x115g',
+          price: 14.94,
+          cat: 'Frozen',
+        },
+        {
+          id: 70,
+          name: 'Natrel Organic Fudge Bars',
+          spec: '14 x 88ml',
+          price: 14.94,
+          cat: 'Frozen',
+        },
+        {
+          id: 71,
+          name: 'Nestlé Coffee Mate',
+          spec: '1.9kg',
+          price: 14.94,
+          cat: 'Coffee & Tea',
+        },
+        {
+          id: 72,
+          name: 'Almond Breeze Unsweetened',
+          spec: '6 x 946mL',
+          price: 14.94,
+          cat: 'Beverages',
+        },
+        {
+          id: 73,
+          name: 'Grown Right Orange Juice',
+          spec: '2 x 1.89L',
+          price: 14.94,
+          cat: 'Beverages',
+        },
+        {
+          id: 74,
+          name: 'Blueberries',
+          spec: '510g',
+          price: 14.94,
+          cat: 'Produce',
+        },
+        {
+          id: 75,
+          name: 'Portuguese Custard Tart',
+          spec: '20 count',
+          price: 14.94,
+          cat: 'Bakery',
+        },
+        {
+          id: 76,
+          name: 'Kirkland Colombian Coffee',
+          spec: '1.36kg',
+          price: 34.49,
+          cat: 'Coffee & Tea',
+        },
+        {
+          id: 77,
+          name: 'Kirkland Decaffeinated Coffee',
+          spec: '1.36kg',
+          price: 39.09,
+          cat: 'Coffee & Tea',
+        },
+        {
+          id: 78,
+          name: 'Kirkland Ice Cream Bars',
+          spec: '18 x 91ml',
+          price: 19.54,
+          cat: 'Frozen',
+        },
+        {
+          id: 79,
+          name: 'Kirkland Matcha Blend Green Tea',
+          spec: '150g',
+          price: 19.54,
+          cat: 'Coffee & Tea',
+        },
+        {
+          id: 80,
+          name: 'Rougemont Apple Juice',
+          spec: '6 x 2L',
+          price: 19.54,
+          cat: 'Beverages',
+        },
+        {
+          id: 81,
+          name: 'Kirkland Hazelnut Spread',
+          spec: '2 x 1kg',
+          price: 19.54,
+          cat: 'Pantry',
+        },
+        {
+          id: 82,
+          name: 'Kirkland 100% Pure Maple Syrup',
+          spec: '740mL',
+          price: 19.54,
+          cat: 'Pantry',
+        },
+        {
+          id: 83,
+          name: 'Pepsi',
+          spec: '32 x 355mL',
+          price: 19.54,
+          cat: 'Beverages',
+        },
+        {
+          id: 84,
+          name: 'Pepsi Zero Sugar',
+          spec: '32 x 355mL',
+          price: 19.54,
+          cat: 'Beverages',
+        },
+        {
+          id: 85,
+          name: 'Diet Pepsi',
+          spec: '32 x 355mL',
+          price: 19.54,
+          cat: 'Beverages',
+        },
+        {
+          id: 86,
+          name: 'Huer Hero Probiotic Gummies',
+          spec: '8 x 75g',
+          price: 19.54,
+          cat: 'Snacks',
+        },
+        {
+          id: 87,
+          name: 'Monster Energy Ultra Zero Variety',
+          spec: '24 x 473mL',
+          price: 51.62,
+          cat: 'Beverages',
+        },
+        {
+          id: 88,
+          name: 'Poppi Classic Faves',
+          spec: '18 x 355mL',
+          price: 33.59,
+          cat: 'Beverages',
+        },
+        {
+          id: 89,
+          name: 'Folgers Classic Roast Ground Coffee',
+          spec: '1.21kg',
+          price: 28.79,
+          cat: 'Coffee & Tea',
+        },
+        {
+          id: 90,
+          name: 'Gatorade Sports Drink',
+          spec: '28 x 591mL',
+          price: 28.79,
+          cat: 'Beverages',
+        },
+        {
+          id: 91,
+          name: 'Gatorade Zero',
+          spec: '28 x 591mL',
+          price: 28.79,
+          cat: 'Beverages',
+        },
+        {
+          id: 92,
+          name: 'Kirkland Pistachios',
+          spec: '1.36kg',
+          price: 28.79,
+          cat: 'Snacks',
+        },
+        {
+          id: 93,
+          name: 'Kirkland Organic Kombucha',
+          spec: '8x473ml',
+          price: 23.99,
+          cat: 'Beverages',
+        },
+        {
+          id: 94,
+          name: 'Well PWR Greens',
+          spec: '6x333ml',
+          price: 23.99,
+          cat: 'Beverages',
+        },
+        {
+          id: 95,
+          name: 'Nestlé Drumstick Variety Pack',
+          spec: '18 x 140ml',
+          price: 23.99,
+          cat: 'Frozen',
+        },
+        {
+          id: 96,
+          name: 'Traditions Vanilla Mega Sandwich',
+          spec: '30 x 190ml',
+          price: 23.99,
+          cat: 'Frozen',
+        },
+        {
+          id: 97,
+          name: 'Perrier Sparkling Water Sleek Cans',
+          spec: '24 x 330mL',
+          price: 23.99,
+          cat: 'Beverages',
+        },
+        {
+          id: 98,
+          name: 'Oasis 100% Orange Juice',
+          spec: '24 x 300mL',
+          price: 23.99,
+          cat: 'Beverages',
+        },
+        {
+          id: 99,
+          name: 'RANA Beef & Short Rib Lasagna',
+          spec: '1.19kg',
+          price: 23.99,
+          cat: 'Frozen',
+        },
+        {
+          id: 100,
+          name: 'Kirkland Tuxedo Cake',
+          spec: '1.240kg',
+          price: 23.99,
+          cat: 'Bakery',
+        },
+        {
+          id: 101,
+          name: "Kirkland Caramel S'more Cluster",
+          spec: '748g',
+          price: 19.19,
+          cat: 'Snacks',
+        },
+        {
+          id: 102,
+          name: 'Don Simon Orange Juice',
+          spec: '4x1L',
+          price: 14.39,
+          cat: 'Beverages',
+        },
+        {
+          id: 103,
+          name: 'Kirkland 0% Greek Yogurt',
+          spec: '3 x 650g',
+          price: 14.39,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 104,
+          name: 'Nestea Lemon Iced Tea',
+          spec: '2.2kg',
+          price: 14.39,
+          cat: 'Beverages',
+        },
+        {
+          id: 105,
+          name: 'Kirkland Organic Vanilla Almond Bev',
+          spec: '6 x 946mL',
+          price: 14.39,
+          cat: 'Beverages',
+        },
+        {
+          id: 106,
+          name: 'Kirkland Organic Original Almond Bev',
+          spec: '6 x 946mL',
+          price: 14.39,
+          cat: 'Beverages',
+        },
+        {
+          id: 107,
+          name: "Fresh'n Pure Pineapple Burst",
+          spec: '6 x 1L',
+          price: 14.39,
+          cat: 'Beverages',
+        },
+        {
+          id: 108,
+          name: 'Kirkland Natural Peanut Butter',
+          spec: '2 x 1kg',
+          price: 14.39,
+          cat: 'Pantry',
+        },
+        {
+          id: 109,
+          name: 'Sable Black Grapes',
+          spec: '3lb',
+          price: 14.39,
+          cat: 'Produce',
+        },
+        {
+          id: 110,
+          name: 'Red Seedless Grapes',
+          spec: '3lb',
+          price: 14.39,
+          cat: 'Produce',
+        },
+        {
+          id: 111,
+          name: 'Green Seedless Grapes',
+          spec: '1.36kg',
+          price: 14.39,
+          cat: 'Produce',
+        },
+        {
+          id: 112,
+          name: 'Chicken Pot Pie',
+          spec: '1.25kg',
+          price: 14.39,
+          cat: 'Frozen',
+        },
+        {
+          id: 113,
+          name: 'Maison Isabelle Sliced Cake',
+          spec: '1.18kg',
+          price: 14.39,
+          cat: 'Bakery',
+        },
+        {
+          id: 114,
+          name: 'Kirkland Chocolate Chunk Cookies',
+          spec: '1.075kg',
+          price: 14.39,
+          cat: 'Bakery',
+        },
+        {
+          id: 115,
+          name: 'iÖGO 0% Yogurt',
+          spec: '24 x 100g',
+          price: 10.55,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 116,
+          name: 'Stonefire Naan Dippers',
+          spec: '500g',
+          price: 10.55,
+          cat: 'Snacks',
+        },
+        {
+          id: 117,
+          name: 'Ruffles All Dressed Potato Chips',
+          spec: '612g',
+          price: 9.59,
+          cat: 'Snacks',
+        },
+        {
+          id: 118,
+          name: 'Organic Black Oyster Mushrooms',
+          spec: '350g',
+          price: 9.59,
+          cat: 'Produce',
+        },
+        {
+          id: 119,
+          name: 'Raspberries',
+          spec: '340g',
+          price: 9.59,
+          cat: 'Produce',
+        },
+        {
+          id: 120,
+          name: 'Sweet Karoline Blackberries',
+          spec: '340g',
+          price: 9.59,
+          cat: 'Produce',
+        },
+        { id: 121, name: 'Plums', spec: '1kg', price: 9.59, cat: 'Produce' },
+        {
+          id: 122,
+          name: 'Seasoned Rotisserie Chicken',
+          spec: '1.200kg',
+          price: 9.59,
+          cat: 'Meat',
+        },
+        {
+          id: 123,
+          name: 'Double Chocolate Muffins',
+          spec: '890g',
+          price: 9.59,
+          cat: 'Bakery',
+        },
+        {
+          id: 124,
+          name: 'Cranberry Orange Muffins',
+          spec: '900g',
+          price: 9.59,
+          cat: 'Bakery',
+        },
+        {
+          id: 125,
+          name: 'Blueberry Muffins',
+          spec: '870g',
+          price: 9.59,
+          cat: 'Bakery',
+        },
+        {
+          id: 126,
+          name: 'Banana Walnut Muffins',
+          spec: '850g',
+          price: 9.59,
+          cat: 'Bakery',
+        },
+        {
+          id: 127,
+          name: 'Golden Pineapple',
+          spec: 'Product of Costa Rica',
+          price: 7.19,
+          cat: 'Produce',
+        },
+        {
+          id: 128,
+          name: 'Sealtest 35% Whipping Cream',
+          spec: '1L',
+          price: 8.03,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 129,
+          name: 'Kirkland Natural Spring Water',
+          spec: '40x500ml',
+          price: 5.15,
+          cat: 'Beverages',
+        },
+        {
+          id: 130,
+          name: 'McCafe Premium Roast Coffee',
+          spec: '4 x 340g',
+          price: 41.99,
+          cat: 'Coffee & Tea',
+        },
+        {
+          id: 131,
+          name: 'Swiss Delice Dark Chocolate 72%',
+          spec: '1.5kg',
+          price: 41.99,
+          cat: 'Snacks',
+        },
+        {
+          id: 132,
+          name: 'bubly Variety Pack Sparkling Water',
+          spec: '32 x 355mL',
+          price: 19.07,
+          cat: 'Beverages',
+        },
+        {
+          id: 133,
+          name: 'DOSE Ginger & Turmeric',
+          spec: '12x60ml',
+          price: 32.39,
+          cat: 'Beverages',
+        },
+        {
+          id: 134,
+          name: 'Limoncello Mascarpone Cake',
+          spec: '1.46kg',
+          price: 32.39,
+          cat: 'Bakery',
+        },
+        {
+          id: 135,
+          name: 'Kirkland Variety Snacking Nuts',
+          spec: '30 x 45g',
+          price: 32.39,
+          cat: 'Snacks',
+        },
+        {
+          id: 136,
+          name: 'La Petite Bretonne Madeleines',
+          spec: '710g',
+          price: 16.19,
+          cat: 'Bakery',
+        },
+        {
+          id: 137,
+          name: 'Ocean Spray 100% Cranberry Juice',
+          spec: '2 x 2.83L',
+          price: 15.23,
+          cat: 'Beverages',
+        },
+        {
+          id: 138,
+          name: 'Kirkland Pepperoni Pizza',
+          spec: '4 x 555g',
+          price: 22.79,
+          cat: 'Frozen',
+        },
+        {
+          id: 139,
+          name: 'Nestlé Kit Kat Bars',
+          spec: '20 x 80ml',
+          price: 22.79,
+          cat: 'Snacks',
+        },
+        {
+          id: 140,
+          name: 'I-Mei Mango Boba Ice Bars',
+          spec: '960g',
+          price: 22.79,
+          cat: 'Frozen',
+        },
+        {
+          id: 141,
+          name: 'Nestlé KitKat F1 Race Car',
+          spec: '693g',
+          price: 22.79,
+          cat: 'Snacks',
+        },
+        {
+          id: 142,
+          name: 'Chocovia Dubai Pistachio Choco',
+          spec: '450g',
+          price: 22.79,
+          cat: 'Snacks',
+        },
+        {
+          id: 143,
+          name: 'Kashi Organic Fruit Bar',
+          spec: '28 x 18g',
+          price: 22.79,
+          cat: 'Snacks',
+        },
+        {
+          id: 144,
+          name: 'Lotte Zero Peach Kiwi Yuzu',
+          spec: '54 x 14g',
+          price: 22.79,
+          cat: 'Snacks',
+        },
+        {
+          id: 145,
+          name: 'Kirkland Unsalted Cashews',
+          spec: '1.13kg',
+          price: 22.79,
+          cat: 'Snacks',
+        },
+        {
+          id: 146,
+          name: 'Kirkland Whole Cashews',
+          spec: '1.13kg',
+          price: 22.79,
+          cat: 'Snacks',
+        },
+        {
+          id: 147,
+          name: 'illy Fine Ground Coffee Dark Roast',
+          spec: '250g',
+          price: 11.39,
+          cat: 'Coffee & Tea',
+        },
+        {
+          id: 148,
+          name: "TGI Friday's Potato Skins Cheddar",
+          spec: '992g',
+          price: 17.99,
+          cat: 'Snacks',
+        },
+        {
+          id: 149,
+          name: 'Synear Panda Buns with Custard',
+          spec: '720g',
+          price: 17.99,
+          cat: 'Frozen',
+        },
+        {
+          id: 150,
+          name: 'Kraft Peanut Butter Ice Cream Bar',
+          spec: '12 x 72ml',
+          price: 17.99,
+          cat: 'Frozen',
+        },
+        {
+          id: 151,
+          name: 'Le Glacier Bilboquet Mango Sorbet',
+          spec: '12 x 88ml',
+          price: 17.99,
+          cat: 'Frozen',
+        },
+        {
+          id: 152,
+          name: 'Kirkland Signature Big Red Cups',
+          spec: 'Pack of 240',
+          price: 17.99,
+          cat: 'Pantry',
+        },
+        {
+          id: 153,
+          name: 'Cara Cara Oranges',
+          spec: '3.6kg',
+          price: 17.99,
+          cat: 'Produce',
+        },
+        {
+          id: 154,
+          name: 'Kirkland Homestyle Apple Pie',
+          spec: '2.100kg',
+          price: 17.99,
+          cat: 'Bakery',
+        },
+        {
+          id: 155,
+          name: 'Coca-Cola Zero Sugar',
+          spec: '32 x 355mL',
+          price: 20.75,
+          cat: 'Beverages',
+        },
+        {
+          id: 156,
+          name: 'Diet Coke',
+          spec: '32 x 355mL',
+          price: 20.75,
+          cat: 'Beverages',
+        },
+        {
+          id: 157,
+          name: 'Coke',
+          spec: '32 x 355mL',
+          price: 20.75,
+          cat: 'Beverages',
+        },
+        {
+          id: 158,
+          name: 'Canada Dry Ginger Ale',
+          spec: '32 x 355mL',
+          price: 20.75,
+          cat: 'Beverages',
+        },
+        {
+          id: 159,
+          name: 'Kirkland Organic Soy Beverage',
+          spec: '6 x 946mL',
+          price: 13.19,
+          cat: 'Beverages',
+        },
+        {
+          id: 160,
+          name: "Reser's Baked Scalloped Potatoes",
+          spec: '1.13kg',
+          price: 13.19,
+          cat: 'Frozen',
+        },
+        {
+          id: 161,
+          name: 'Green Kiwi',
+          spec: '1.36kg',
+          price: 13.19,
+          cat: 'Produce',
+        },
+        {
+          id: 162,
+          name: 'Natrel 10% Dairy Creamer',
+          spec: '160 x 9mL',
+          price: 7.91,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 163,
+          name: 'Whole White Mushrooms',
+          spec: '680g',
+          price: 6.59,
+          cat: 'Produce',
+        },
+        {
+          id: 164,
+          name: 'Kartago Khidri Dates',
+          spec: '2kg',
+          price: 14.99,
+          cat: 'Snacks',
+        },
+        {
+          id: 165,
+          name: 'Good Moood Farm Kefir 3.25%',
+          spec: '2L',
+          price: 8.39,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 166,
+          name: 'Tradition Apple Juice',
+          spec: '2x2L',
+          price: 8.39,
+          cat: 'Beverages',
+        },
+        {
+          id: 167,
+          name: "Lay's Classic Potato Chips",
+          spec: '620g',
+          price: 8.39,
+          cat: 'Snacks',
+        },
+        {
+          id: 168,
+          name: 'Cheetos Cheesy Bacon Puffs',
+          spec: '600g',
+          price: 8.39,
+          cat: 'Snacks',
+        },
+        {
+          id: 169,
+          name: 'Elegant Balkan Yogurt 5.9%',
+          spec: '1.8kg',
+          price: 8.39,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 170,
+          name: 'Green Onions',
+          spec: '900g',
+          price: 8.39,
+          cat: 'Produce',
+        },
+        {
+          id: 171,
+          name: 'Yellow Nectarines',
+          spec: '1kg',
+          price: 8.39,
+          cat: 'Produce',
+        },
+        {
+          id: 172,
+          name: 'Brioche Buns',
+          spec: '1.100kg',
+          price: 8.39,
+          cat: 'Bakery',
+        },
+        {
+          id: 173,
+          name: 'All Butter Croissants',
+          spec: '12ct 825g',
+          price: 8.39,
+          cat: 'Bakery',
+        },
+        { id: 174, name: 'Bananas', spec: 'Pack', price: 2.03, cat: 'Produce' },
+        {
+          id: 175,
+          name: 'Authentic Asia Shrimp Wonton Ramen',
+          spec: '6x308g',
+          price: 27.59,
+          cat: 'Pantry',
+        },
+        {
+          id: 176,
+          name: 'Jones Soda Fallout Sarsaparilla',
+          spec: '12 x 355mL',
+          price: 27.59,
+          cat: 'Beverages',
+        },
+        {
+          id: 177,
+          name: "That's It Mini Probiotic Fruit Bars",
+          spec: '480g',
+          price: 27.59,
+          cat: 'Snacks',
+        },
+        {
+          id: 178,
+          name: 'Kirkland Organic Eggs',
+          spec: 'Pack of 24',
+          price: 14.99,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 179,
+          name: "Hon's BBQ Pork Bao Bun Kit",
+          spec: '880g',
+          price: 17.99,
+          cat: 'Frozen',
+        },
+        {
+          id: 180,
+          name: 'OMGI Almond Toffee Clusters',
+          spec: '680g',
+          price: 17.99,
+          cat: 'Snacks',
+        },
+        {
+          id: 181,
+          name: 'Green Valley Free Range Eggs',
+          spec: 'Pack of 24',
+          price: 14.39,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 182,
+          name: 'Kirkland Braided Apple Turnovers',
+          spec: '1.050kg',
+          price: 10.79,
+          cat: 'Bakery',
+        },
+        {
+          id: 183,
+          name: 'Mini Watermelon',
+          spec: 'Product of Guatemala',
+          price: 7.19,
+          cat: 'Produce',
+        },
+        {
+          id: 184,
+          name: 'Melona Melon Mango Strawberry',
+          spec: '24 x 70ml',
+          price: 15.59,
+          cat: 'Frozen',
+        },
+        {
+          id: 185,
+          name: 'Kirkland Free Run Eggs',
+          spec: 'Pack of 24',
+          price: 10.79,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 186,
+          name: 'Natrel Chocolate Milk',
+          spec: '16 x 200mL',
+          price: 14.39,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 187,
+          name: 'Natrel 2% Dairy Milker',
+          spec: '160 x 9mL',
+          price: 6.11,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 188,
+          name: "L'Outaouais Chocolate Milk 2%",
+          spec: '2L',
+          price: 5.74,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 189,
+          name: 'Sealtest 3.25% Homogenized Milk',
+          spec: '4L',
+          price: 7.44,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 190,
+          name: 'Sealtest 2% Milk',
+          spec: '4L',
+          price: 6.39,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 191,
+          name: 'Sealtest 1% Milk',
+          spec: '4L',
+          price: 6.39,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 192,
+          name: 'Kirkland 2% Organic Milk',
+          spec: '4L',
+          price: 12.35,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 193,
+          name: 'Sealtest Skim Milk',
+          spec: '4L',
+          price: 7.0,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 194,
+          name: 'Natrel 1% Fine-Filtered Milk',
+          spec: '4L',
+          price: 7.14,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 195,
+          name: 'Natrel 2% Fine-Filtered Milk',
+          spec: '4L',
+          price: 7.14,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 196,
+          name: 'Natrel Plus 2% Milk',
+          spec: '2L',
+          price: 7.67,
+          cat: 'Dairy & Eggs',
+        },
+        {
+          id: 197,
+          name: 'Swiss Delice Milk Chocolate',
+          spec: '1.5kg',
+          price: 34.49,
+          cat: 'Snacks',
+        },
+      ];
+
+      const nameCN = {
+        1: 'Tropicana橙汁',
+        2: '鸡尾虾',
+        3: 'Tim Hortons原味咖啡',
+        4: '科克兰水煮鸡蛋',
+        5: '蔬菜麦秆薯片',
+        6: 'Cosmic Crisp苹果',
+        7: '健康选择希腊酸奶棒',
+        8: 'Super Coffee蛋白奶昔',
+        9: '白巧蓝莓零食',
+        10: '千层蛋糕',
+        11: 'Maison Perrier气泡水',
+        12: '科克兰椰子水(无糖)',
+        13: '科克兰提拉米苏蛋糕',
+        14: '三养爆辣奶油拉面',
+        15: "Pinty's水牛城鸡肉",
+        16: '有机气泡果汁',
+        17: '芒果橙汁',
+        18: '桃子罐头',
+        19: '棉花糖葡萄',
+        20: '科克兰鲜奶油',
+        21: '有机小番茄',
+        22: '蜜桔',
+        23: '牛油果',
+        24: 'Smitten苹果',
+        25: '嘎啦苹果',
+        26: '棕榈糖',
+        27: 'Liberté 2%原味酸奶',
+        28: "Chapman's香草冰淇淋",
+        29: '法棍面包',
+        30: '芒果软糖',
+        31: 'Frito Lay综合薯片',
+        32: '圣培露气泡水',
+        33: '法式马卡龙',
+        34: '科克兰希腊酸奶3%',
+        35: '科克兰气泡水',
+        36: '大理石磅蛋糕',
+        37: '法式洋葱汤',
+        38: '哈根达斯香草杏仁棒',
+        39: '冷冻芒果',
+        40: '草莓',
+        41: '有机蓝莓',
+        42: '蜜脆苹果',
+        43: '科克兰综合甜甜圈',
+        44: 'Brookside黑巧克力',
+        45: 'Goldfish切达饼干',
+        46: '乐天百力滋',
+        47: 'Eska柠檬气泡水',
+        48: "Sabatasso's披萨片",
+        49: '迪拜冰淇淋棒',
+        50: '什锦果味冰糕',
+        51: 'Fuze柠檬冰茶',
+        52: '科克兰培根奶酪鸡蛋杯',
+        53: '混合莓软糖',
+        54: '黑巧椰子棒',
+        55: '开心果团',
+        56: 'Doritos芝士薯片',
+        57: '芒果汁',
+        58: '藤番茄',
+        59: '小番茄',
+        60: '肉桂卷',
+        61: '香蕉巧克力条',
+        62: '比利时华夫饼',
+        63: '迷你奶酪可颂',
+        64: '科克兰迷你巧克力可颂',
+        65: '芬达综合',
+        66: '雀巢综合零食棒',
+        67: '科克兰气泡矿泉水',
+        68: '科克兰烤杏仁',
+        69: 'TC Foods中式汉堡',
+        70: 'Natrel有机冰棒',
+        71: '雀巢Coffee Mate',
+        72: '无糖杏仁奶',
+        73: 'Grown Right橙汁',
+        74: '蓝莓',
+        75: '葡式蛋挞',
+        76: '科克兰哥伦比亚咖啡',
+        77: '科克兰无咖啡因咖啡',
+        78: '科克兰冰淇淋棒',
+        79: '科克兰抹茶绿茶包',
+        80: '苹果汁',
+        81: '科克兰榛子酱',
+        82: '科克兰纯枫糖浆',
+        83: '百事可乐',
+        84: '百事零糖',
+        85: '健怡百事',
+        86: '益生菌软糖',
+        87: 'Monster无糖能量饮料',
+        88: 'Poppi益生菌苏打',
+        89: 'Folgers原味咖啡',
+        90: '佳得乐运动饮料',
+        91: '佳得乐零糖',
+        92: '科克兰开心果',
+        93: '科克兰有机康普茶',
+        94: 'Well PWR绿色饮料',
+        95: '雀巢Drumstick冰淇淋',
+        96: '香草三明治冰淇淋',
+        97: 'Perrier气泡水罐装',
+        98: 'Oasis纯橙汁',
+        99: '牛肉千层面',
+        100: '科克兰黑白蛋糕',
+        101: "科克兰焦糖S'more",
+        102: 'Don Simon橙汁',
+        103: '科克兰0%希腊酸奶',
+        104: '雀巢柠檬冰茶',
+        105: '科克兰有机香草杏仁奶',
+        106: '科克兰有机原味杏仁奶',
+        107: '菠萝果汁',
+        108: '科克兰天然花生酱',
+        109: '黑提',
+        110: '红无籽葡萄',
+        111: '绿无籽葡萄',
+        112: '鸡肉派',
+        113: 'Maison Isabelle切片蛋糕',
+        114: '科克兰巧克力豆曲奇',
+        115: 'iOGO 0%酸奶',
+        116: '印度烤馍饼',
+        117: 'Ruffles百味薯片',
+        118: '有机黑蚝菇',
+        119: '覆盆子',
+        120: '黑莓',
+        121: '李子',
+        122: '烤鸡',
+        123: '双重巧克力松饼',
+        124: '蔓越莓橙子松饼',
+        125: '蓝莓松饼',
+        126: '香蕉核桃松饼',
+        127: '金色菠萝',
+        128: 'Sealtest 35%鲜奶油',
+        129: '科克兰天然矿泉水',
+        130: 'McCafe特级咖啡',
+        131: 'Swiss Delice 72%黑巧',
+        132: 'bubly气泡水综合',
+        133: 'DOSE姜黄饮料',
+        134: '柠檬奶酪蛋糕',
+        135: '科克兰综合坚果',
+        136: '法式玛德莲',
+        137: 'Ocean Spray蔓越莓汁',
+        138: '科克兰意式辣肠披萨',
+        139: '雀巢奇巧冰淇淋棒',
+        140: 'I-Mei芒果波霸冰棒',
+        141: '奇巧F1赛车版',
+        142: '迪拜开心果巧克力',
+        143: 'Kashi有机水果棒',
+        144: '乐天零糖桃子柚子糖',
+        145: '科克兰无盐腰果',
+        146: '科克兰原味腰果',
+        147: 'illy深度烘焙咖啡',
+        148: "TGI Friday's培根薯皮",
+        149: '熊猫奶黄包',
+        150: 'Kraft花生酱冰淇淋棒',
+        151: 'Le Glacier芒果冰糕',
+        152: '科克兰大红杯',
+        153: '卡拉卡拉橙',
+        154: '科克兰苹果派',
+        155: '可口可乐零糖',
+        156: '健怡可乐',
+        157: '可口可乐',
+        158: '加拿大干姜汁汽水',
+        159: '科克兰有机豆浆',
+        160: '烤奶油土豆',
+        161: '绿奇异果',
+        162: 'Natrel奶精',
+        163: '白蘑菇',
+        164: '椰枣',
+        165: '开菲尔发酵乳',
+        166: 'Tradition苹果汁',
+        167: "Lay's原味薯片",
+        168: 'Cheetos培根芝士',
+        169: '巴尔干酸奶5.9%',
+        170: '小葱',
+        171: '黄油桃',
+        172: '布里欧修圆包',
+        173: '纯黄油牛角包',
+        174: '香蕉',
+        175: '虾云吞拉面',
+        176: 'Jones汽水',
+        177: '益生菌水果棒',
+        178: '科克兰有机鸡蛋',
+        179: '叉烧包套件',
+        180: '杏仁糖簇',
+        181: 'Green Valley放养鸡蛋',
+        182: '苹果翻转酥',
+        183: '迷你西瓜',
+        184: 'Melona冰棒',
+        185: '科克兰放养鸡蛋',
+        186: 'Natrel巧克力奶',
+        187: 'Natrel 2%奶精',
+        188: "L'Outaouais巧克力奶",
+        189: 'Sealtest全脂牛奶',
+        190: 'Sealtest 2%牛奶',
+        191: 'Sealtest 1%牛奶',
+        192: '科克兰有机2%牛奶',
+        193: 'Sealtest脱脂牛奶',
+        194: 'Natrel 1%精滤牛奶',
+        195: 'Natrel 2%精滤牛奶',
+        196: 'Natrel Plus 2%牛奶',
+        197: 'Swiss Delice牛奶巧克力',
+      };
+
+      // ── STATE ─────────────────────────────────────────────────────────────────────
+      let lang = 'en',
+        cart = {},
+        activeTab = 'All',
+        searchQ = '';
+      const $ = (id) => document.getElementById(id);
+
+      // ── STRINGS ───────────────────────────────────────────────────────────────────
+      const TX = {
+        hdSub: {
+          en: 'Next-Day · Order by 10PM',
+          zh: '次日配送 · 晚10点前下单',
+        },
+        mainTitle: { en: 'All Products', zh: '全部商品' },
+        sortDefault: { en: 'Default', zh: '默认' },
+        sortAsc: { en: 'Price ↑', zh: '价格升' },
+        sortDesc: { en: 'Price ↓', zh: '价格降' },
+        sortName: { en: 'A–Z', zh: '名称' },
+        cartBtn: { en: 'Cart', zh: '购物车' },
+        sCartTitle: { en: 'My Cart', zh: '我的购物车' },
+        mSheetTitle: { en: 'My Cart', zh: '我的购物车' },
+        emptyCart: { en: 'Your cart is empty', zh: '购物车是空的' },
+        progLbl: { en: 'Free delivery progress', zh: '距免运费' },
+        subtotal: { en: 'Subtotal', zh: '小计' },
+        delivery: { en: 'Delivery', zh: '配送费' },
+        total: { en: 'Total', zh: '合计' },
+        free: { en: 'FREE', zh: '免费' },
+        formTitle: { en: 'Delivery Info', zh: '配送信息' },
+        lblName: { en: 'Full Name', zh: '姓名' },
+        lblPhone: { en: 'Phone', zh: '电话' },
+        lblAddr: { en: 'Address', zh: '地址' },
+        addrPH: { en: 'Select address…', zh: '选择地址…' },
+        addr1: {
+          en: '📍 Address 1 – Next-day by 11:00 AM',
+          zh: '📍 地址1 – 次日上午11点送达',
+        },
+        addr2: {
+          en: '📍 Address 2 – Next-day by 4:00 PM',
+          zh: '📍 地址2 – 次日下午4点送达',
+        },
+        coBtn: { en: 'Place Order', zh: '提交订单' },
+        mCartLabel: { en: 'View Cart & Checkout', zh: '查看购物车 & 结算' },
+        successTitle: { en: 'Order Received!', zh: '订单已提交！' },
+        successBody: {
+          en: "Thank you! We'll confirm via phone shortly.",
+          zh: '谢谢！我们将很快通过电话确认您的订单。',
+        },
+        successBtn: { en: 'Continue Shopping', zh: '继续购物' },
+        added: { en: 'Added to cart ✓', zh: '已加入购物车 ✓' },
+        minWarn: {
+          en: 'Add $${n} more to reach minimum',
+          zh: '还需 $$${n} 才能下单',
+        },
+        freeLeft: {
+          en: '$${n} away from free delivery!',
+          zh: '再加 $$${n} 即可免费配送！',
+        },
+        freeUnlocked: {
+          en: '🎉 Free delivery unlocked!',
+          zh: '🎉 已解锁免费配送！',
+        },
+        submitting: { en: 'Sending…', zh: '提交中…' },
+        errFill: { en: 'Please fill in all fields.', zh: '请填写所有信息。' },
+        errMin: { en: 'Minimum order is $20.', zh: '最低消费 $20。' },
+        errNet: {
+          en: 'Network error. Please try again.',
+          zh: '网络错误，请重试。',
+        },
+      };
+      function t(k, v) {
+        let s = TX[k] ? TX[k][lang] : k;
+        if (v)
+          Object.entries(v).forEach(
+            ([a, b]) => (s = s.replaceAll('${' + a + '}', b)),
+          );
+        return s;
+      }
+
+      // ── LANG ──────────────────────────────────────────────────────────────────────
+      function setLang(l) {
+        lang = l;
+        $('btnEN').classList.toggle('active', l === 'en');
+        $('btnZH').classList.toggle('active', l === 'zh');
+        applyStaticStrings();
+        renderSideCats();
+        renderTabRow();
+        renderProducts();
+        renderCart();
+      }
+      function applyStaticStrings() {
+        $('hdSubtitle').textContent = t('hdSub');
+        $('sortDefault').textContent = t('sortDefault');
+        $('sortAsc').textContent = t('sortAsc');
+        $('sortDesc').textContent = t('sortDesc');
+        $('sortName').textContent = t('sortName');
+        $('cartBtnLabel').textContent = t('cartBtn');
+        // sidebar strings
+        ['s', 'm'].forEach((p) => {
+          const suf = p === 's' ? '' : '';
+          $(p + 'CartTitle') || null;
+        });
+        // both panels
+        for (const p of ['s', 'm']) {
+          if ($(p + 'CartTitle'))
+            $(p + 'CartTitle').textContent = t(
+              p === 's' ? 'sCartTitle' : 'mSheetTitle',
+            );
+          if ($(p + 'ProgLbl')) $(p + 'ProgLbl').textContent = t('progLbl');
+          if ($(p + 'SubtotalLbl'))
+            $(p + 'SubtotalLbl').textContent = t('subtotal');
+          if ($(p + 'DeliveryLbl'))
+            $(p + 'DeliveryLbl').textContent = t('delivery');
+          if ($(p + 'TotalLbl')) $(p + 'TotalLbl').textContent = t('total');
+          if ($(p + 'FormTitle'))
+            $(p + 'FormTitle').textContent = t('formTitle');
+          if ($(p + 'LblName')) $(p + 'LblName').textContent = t('lblName');
+          if ($(p + 'LblPhone')) $(p + 'LblPhone').textContent = t('lblPhone');
+          if ($(p + 'LblAddr')) $(p + 'LblAddr').textContent = t('lblAddr');
+          if ($(p + 'AddrPH')) $(p + 'AddrPH').textContent = t('addrPH');
+          if ($(p + 'AddrOpt1')) $(p + 'AddrOpt1').textContent = t('addr1');
+          if ($(p + 'AddrOpt2')) $(p + 'AddrOpt2').textContent = t('addr2');
+          if ($(p + 'CoBtnLabel')) $(p + 'CoBtnLabel').textContent = t('coBtn');
+          if ($(p + 'SuccessTitle'))
+            $(p + 'SuccessTitle').textContent = t('successTitle');
+          if ($(p + 'SuccessBody'))
+            $(p + 'SuccessBody').textContent = t('successBody');
+          if ($(p + 'SuccessBtn'))
+            $(p + 'SuccessBtn').textContent = t('successBtn');
+        }
+        $('mCartLabel').textContent = t('mCartLabel');
+        $('searchInput').placeholder =
+          lang === 'zh' ? '搜索商品…' : 'Search products…';
+      }
+
+      // ── HELPERS ───────────────────────────────────────────────────────────────────
+      function dn(p) {
+        return lang === 'zh' && nameCN[p.id] ? nameCN[p.id] : p.name;
+      }
+      function imgTag(id, cls) {
+        const f = imgMap[id],
+          p = products.find((x) => x.id == id);
+        const fb = `<div class="${cls}-ph">${catEmoji[p?.cat] || '📦'}</div>`;
+        if (!f) return fb;
+        return `<img class="${cls}" src="${IMG_BASE}${f}" alt="" loading="lazy" onerror="this.outerHTML='${fb.replace(/'/g, '&#39;')}'">`;
+      }
+      function cartImgTag(id) {
+        const f = imgMap[id],
+          p = products.find((x) => x.id == id);
+        if (!f)
+          return `<div class="ci-img-ph">${catEmoji[p?.cat] || '📦'}</div>`;
+        return `<img class="ci-img" src="${IMG_BASE}${f}" alt="" loading="lazy" onerror="this.className='ci-img-ph';this.textContent='${catEmoji[p?.cat] || '📦'}'">`;
+      }
+
+      // ── CATEGORIES SIDEBAR ────────────────────────────────────────────────────────
+      function renderSideCats() {
+        const cats = ['All', ...new Set(products.map((p) => p.cat))];
+        $('catSidebar').innerHTML =
+          `<div class="cat-label">${lang === 'zh' ? '分类' : 'Categories'}</div>` +
+          cats
+            .map((c) => {
+              const cnt =
+                c === 'All'
+                  ? products.length
+                  : products.filter((p) => p.cat === c).length;
+              return `<div class="cat-item${activeTab === c ? ' active' : ''}" onclick="setTab('${c}')">
+        <span class="ci-emoji">${c === 'All' ? '🏪' : catEmoji[c] || '📦'}</span>
+        <span>${lang === 'zh' ? catCN[c] || c : c}</span>
+        <span class="ci-count">${cnt}</span>
+      </div>`;
+            })
+            .join('');
+      }
+
+      // ── TAB ROW (tablet) ──────────────────────────────────────────────────────────
+      function renderTabRow() {
+        const cats = ['All', ...new Set(products.map((p) => p.cat))];
+        $('tabRow').innerHTML = cats
+          .map(
+            (c) =>
+              `<button class="tab${activeTab === c ? ' active' : ''}" onclick="setTab('${c}')">${c !== 'All' ? (catEmoji[c] || '') + ' ' : ''}${lang === 'zh' ? catCN[c] || c : c}</button>`,
+          )
+          .join('');
+      }
+
+      // ── PRODUCTS ──────────────────────────────────────────────────────────────────
+      function renderProducts() {
+        let list = products;
+        if (activeTab !== 'All') list = list.filter((p) => p.cat === activeTab);
+        if (searchQ) {
+          const q = searchQ.toLowerCase();
+          list = list.filter(
+            (p) =>
+              p.name.toLowerCase().includes(q) ||
+              (nameCN[p.id] && nameCN[p.id].includes(q)) ||
+              p.spec.toLowerCase().includes(q),
+          );
+        }
+        // sort
+        const sv = $('sortSel').value;
+        if (sv === 'price-asc')
+          list = [...list].sort((a, b) => a.price - b.price);
+        else if (sv === 'price-desc')
+          list = [...list].sort((a, b) => b.price - a.price);
+        else if (sv === 'name')
+          list = [...list].sort((a, b) => dn(a).localeCompare(dn(b)));
+        const title =
+          activeTab === 'All'
+            ? t('mainTitle')
+            : lang === 'zh'
+              ? catCN[activeTab] || activeTab
+              : activeTab;
+        $('mainTitle').textContent = title;
+        $('prodCount').textContent = `(${list.length})`;
+        if (!list.length) {
+          $('grid').innerHTML =
+            `<div class="no-res">🔍 ${lang === 'zh' ? '没有找到相关商品' : 'No products found'}</div>`;
+          return;
+        }
+        $('grid').innerHTML = list
+          .map((p) => {
+            const qty = cart[p.id] || 0;
+            const hasQty = qty > 0;
+            return `<div class="pcard" id="card-${p.id}">
+      ${imgTag(p.id, 'pcard-img')}
+      <div class="pcard-body">
+        <div class="pcard-cat">${lang === 'zh' ? catCN[p.cat] || p.cat : p.cat}</div>
+        <div class="pcard-name">${dn(p)}</div>
+        <div class="pcard-spec">${p.spec}</div>
+        <div class="pcard-foot">
+          <div class="pcard-price"><sup>$</sup>${p.price.toFixed(2)}</div>
+          <div class="add-ctrl${hasQty ? ' has-qty' : ''}" id="ctrl-${p.id}">
+            <button class="plus-btn" onclick="addToCart(${p.id})" title="${lang === 'zh' ? '加入购物车' : 'Add to cart'}">+</button>
+            <div class="qty-group">
+              <button class="qb minus" onclick="cardDec(${p.id})">−</button>
+              <span class="qv">${qty > 0 ? qty : ''}</span>
+              <button class="qb plus" onclick="cardInc(${p.id})">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+          })
+          .join('');
+      }
+
+      // ── CARD ADD CONTROLS ─────────────────────────────────────────────────────────
+      function addToCart(id) {
+        cart[id] = (cart[id] || 0) + 1;
+        // switch card to qty mode
+        const ctrl = document.getElementById('ctrl-' + id);
+        if (ctrl) {
+          ctrl.classList.add('has-qty');
+          ctrl.querySelector('.qv').textContent = cart[id];
+        }
+        updateBadges();
+        renderCart();
+        showToast(t('added'));
+      }
+      function cardInc(id) {
+        cart[id] = (cart[id] || 0) + 1;
+        const ctrl = document.getElementById('ctrl-' + id);
+        if (ctrl) ctrl.querySelector('.qv').textContent = cart[id];
+        updateBadges();
+        renderCart();
+      }
+      function cardDec(id) {
+        cart[id] = (cart[id] || 1) - 1;
+        const ctrl = document.getElementById('ctrl-' + id);
+        if (cart[id] <= 0) {
+          delete cart[id];
+          if (ctrl) {
+            ctrl.classList.remove('has-qty');
+            ctrl.querySelector('.qv').textContent = '';
+          }
+        } else {
+          if (ctrl) ctrl.querySelector('.qv').textContent = cart[id];
+        }
+        updateBadges();
+        renderCart();
+      }
+      function updateBadges() {
+        const total = Object.values(cart).reduce((s, v) => s + v, 0);
+        ['cartBadge', 'mCartBadge'].forEach((id) => {
+          if ($(id)) $(id).textContent = total;
+        });
+      }
+
+      // ── CART RENDER ───────────────────────────────────────────────────────────────
+      function renderCart() {
+        const items = Object.keys(cart).map((id) => ({
+          ...products.find((p) => p.id == id),
+          qty: cart[id],
+        }));
+        const totalQty = items.reduce((s, p) => s + p.qty, 0);
+        const sub = items.reduce((s, p) => s + p.price * p.qty, 0);
+        updateBadges();
+        // render both sidebar (s) and sheet (m)
+        [
+          ['s', 'sCartItems', 'sSummaryWrap'],
+          ['m', 'mCartItems', 'mSummaryWrap'],
+        ].forEach(([p, ciId, swId]) => {
+          const metaEl = $(p + 'CartMeta');
+          if (metaEl)
+            metaEl.textContent = totalQty + (lang === 'zh' ? ' 件' : ' items');
+          const ciEl = $(ciId);
+          if (!ciEl) return;
+          if (!items.length) {
+            ciEl.innerHTML = `<div class="empty-cart"><div class="ei">🛒</div>${t('emptyCart')}</div>`;
+            const sw = $(swId) || $(p + 'CartFoot');
+            if (sw) sw.style.display = 'none';
+            return;
+          }
+          ciEl.innerHTML = items
+            .map(
+              (item) => `
+      <div class="ci">
+        ${cartImgTag(item.id)}
+        <div class="ci-info">
+          <div class="ci-name">${dn(item)}</div>
+          <div class="ci-spec">${item.spec}</div>
+        </div>
+        <div class="ci-right">
+          <div class="ci-price">$${(item.price * item.qty).toFixed(2)}</div>
+          <div class="ci-ctrl">
+            <button class="cqb del" onclick="cartDec(${item.id})">−</button>
+            <span class="cqv">${item.qty}</span>
+            <button class="cqb" onclick="cartInc(${item.id})">+</button>
+          </div>
+        </div>
+      </div>`,
+            )
+            .join('');
+          // show summary
+          const sw = $(p === 's' ? 'sCartFoot' : swId);
+          if (sw) sw.style.display = '';
+          // progress
+          const FREE = 40,
+            MIN = 20,
+            FEE = 5;
+          const pct = Math.min((sub / FREE) * 100, 100);
+          const progFill = $(p + 'ProgFill');
+          if (progFill) progFill.style.width = pct + '%';
+          const progAmt = $(p + 'ProgAmt');
+          if (progAmt)
+            progAmt.innerHTML =
+              sub >= FREE
+                ? `<span class="free-tag">${lang === 'zh' ? '已免运费' : 'Free!'}</span>`
+                : `$${(FREE - sub).toFixed(2)} ${lang === 'zh' ? '即可免运费' : 'to free'}`;
+          // totals
+          let dv = 0,
+            dvH = '';
+          if (sub < MIN) {
+            dv = 0;
+            dvH = '—';
+          } else if (sub < FREE) {
+            dv = FEE;
+            dvH = `$${FEE.toFixed(2)}`;
+          } else {
+            dv = 0;
+            dvH = `<span class="free-ship">${t('free')}</span>`;
+          }
+          const tot = sub + dv;
+          if ($(p + 'SubtotalVal'))
+            $(p + 'SubtotalVal').textContent = `$${sub.toFixed(2)}`;
+          if ($(p + 'DeliveryVal')) $(p + 'DeliveryVal').innerHTML = dvH;
+          if ($(p + 'TotalVal'))
+            $(p + 'TotalVal').textContent = `$${tot.toFixed(2)}`;
+          // notice + btn
+          const coBtn = $(p + 'CoBtn'),
+            ntc = $(p + 'Notice');
+          if (coBtn) {
+            coBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span id="${p}CoBtnLabel">${t('coBtn')}</span>`;
+            if (sub < MIN) {
+              coBtn.disabled = true;
+              if (ntc) {
+                ntc.textContent = t('minWarn', { n: (MIN - sub).toFixed(2) });
+                ntc.className = 'min-notice warn';
+              }
+            } else if (sub < FREE) {
+              coBtn.disabled = false;
+              if (ntc) {
+                ntc.textContent = t('freeLeft', { n: (FREE - sub).toFixed(2) });
+                ntc.className = 'min-notice';
+              }
+            } else {
+              coBtn.disabled = false;
+              if (ntc) {
+                ntc.textContent = t('freeUnlocked');
+                ntc.className = 'min-notice good';
+              }
+            }
+          }
+          // mobile cart bar total
+          const mcb = $('mCartLabel');
+          if (mcb && p === 'm')
+            mcb.textContent = `${t('mCartLabel')} · $${tot.toFixed(2)}`;
+        });
+      }
+
+      function cartInc(id) {
+        cart[id] = (cart[id] || 0) + 1;
+        syncCard(id);
+        renderCart();
+      }
+      function cartDec(id) {
+        cart[id] = (cart[id] || 1) - 1;
+        if (cart[id] <= 0) delete cart[id];
+        syncCard(id);
+        renderCart();
+      }
+      function syncCard(id) {
+        const ctrl = document.getElementById('ctrl-' + id);
+        if (!ctrl) return;
+        const qty = cart[id] || 0;
+        if (qty > 0) {
+          ctrl.classList.add('has-qty');
+          ctrl.querySelector('.qv').textContent = qty;
+        } else {
+          ctrl.classList.remove('has-qty');
+          ctrl.querySelector('.qv').textContent = '';
+        }
+        updateBadges();
+      }
+
+      // ── SHEET ─────────────────────────────────────────────────────────────────────
+      function openSheet() {
+        $('sheetBg').classList.add('open');
+        $('sheet').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeSheet() {
+        $('sheetBg').classList.remove('open');
+        $('sheet').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      // ── CHECKOUT ──────────────────────────────────────────────────────────────────
+      async function checkout(panel) {
+        const nameEl = $(panel + 'FName'),
+          phoneEl = $(panel + 'FPhone'),
+          addrEl = $(panel + 'FAddr');
+        const name = nameEl.value.trim(),
+          phone = phoneEl.value.trim(),
+          addr = addrEl.value;
+        [nameEl, phoneEl, addrEl].forEach((el) => el.classList.remove('err'));
+        if (!name || !phone || !addr) {
+          if (!name) nameEl.classList.add('err');
+          if (!phone) phoneEl.classList.add('err');
+          if (!addr) addrEl.classList.add('err');
+          showToast(t('errFill'));
+          return;
+        }
+        const items = Object.keys(cart).map((id) => ({
+          ...products.find((p) => p.id == id),
+          qty: cart[id],
+        }));
+        const sub = items.reduce((s, p) => s + p.price * p.qty, 0);
+        if (sub < 20) {
+          showToast(t('errMin'));
+          return;
+        }
+        const dv = sub >= 40 ? 0 : 5,
+          tot = sub + dv;
+        const addrLabel = addr === 'addr1' ? t('addr1') : t('addr2');
+        const payload = {
+          timestamp: new Date().toISOString(),
+          name,
+          phone,
+          address: addrLabel,
+          items: items
+            .map((p) => `${dn(p)} ×${p.qty} ($${(p.price * p.qty).toFixed(2)})`)
+            .join('; '),
+          subtotal: sub.toFixed(2),
+          delivery: dv.toFixed(2),
+          total: tot.toFixed(2),
+          lang,
+        };
+        const btn = $(panel + 'CoBtn');
+        btn.disabled = true;
+        btn.innerHTML = `<div class="spinner"></div><span>${t('submitting')}</span>`;
+        try {
+          await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          cart = {};
+          // show success
+          if (panel === 's') {
+            $('sidebarMain').style.display = 'none';
+            $('sSuccess').classList.add('show');
+          } else {
+            $('sheetMain').style.display = 'none';
+            $('mSuccess').classList.add('show');
+          }
+          renderProducts();
+          renderCart();
+        } catch (e) {
+          showToast(t('errNet'));
+          btn.disabled = false;
+          btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span>${t('coBtn')}</span>`;
+        }
+      }
+      function closeSuccess(panel) {
+        if (panel === 's') {
+          $('sidebarMain').style.display = '';
+          $('sSuccess').classList.remove('show');
+        } else {
+          $('sheetMain').style.display = '';
+          $('mSuccess').classList.remove('show');
+          closeSheet();
+        }
+      }
+
+      // ── TOAST ─────────────────────────────────────────────────────────────────────
+      let tt;
+      function showToast(m) {
+        const el = $('toast');
+        el.textContent = m;
+        el.classList.add('show');
+        clearTimeout(tt);
+        tt = setTimeout(() => el.classList.remove('show'), 2000);
+      }
+
+      // ── TAB / SEARCH ──────────────────────────────────────────────────────────────
+      function setTab(c) {
+        activeTab = c;
+        renderSideCats();
+        renderTabRow();
+        renderProducts();
+      }
+      $('searchInput').addEventListener('input', (e) => {
+        searchQ = e.target.value;
+        renderProducts();
+      });
+
+      // ── INIT ──────────────────────────────────────────────────────────────────────
+      // wire sidebar empty cart display
+      document.getElementById('sCartItems').id = 'sCartItems'; // already set
+      // initial render
+      applyStaticStrings();
+      renderSideCats();
+      renderTabRow();
+      renderProducts();
+      renderCart();
+    </script>
+  </body>
+</html>
