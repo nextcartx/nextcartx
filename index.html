@@ -3490,13 +3490,40 @@
       function dn(p) {
         return lang === 'zh' && nameCN[p.id] ? nameCN[p.id] : p.name;
       }
+      // function imgTag(id, cls) {
+      //   const f = imgMap[id],
+      //     p = products.find((x) => x.id == id);
+      //   const fb = `<div class="${cls}-ph">${catEmoji[p?.cat] || '📦'}</div>`;
+      //   if (!f) return fb;
+      //   return `<img class="${cls}" src="${IMG_BASE}${f}" alt="" loading="lazy" onerror="this.outerHTML='${fb.replace(/'/g, '&#39;')}'">`;
+      // }
       function imgTag(id, cls) {
-        const f = imgMap[id],
-          p = products.find((x) => x.id == id);
-        const fb = `<div class="${cls}-ph">${catEmoji[p?.cat] || '📦'}</div>`;
-        if (!f) return fb;
-        return `<img class="${cls}" src="${IMG_BASE}${f}" alt="" loading="lazy" onerror="this.outerHTML='${fb.replace(/'/g, '&#39;')}'">`;
-      }
+  const f = imgMap[id];                    // 你的图片映射
+  const p = products.find((x) => x.id == id);
+  const emoji = catEmoji[p?.cat] || '📦';   // 分类表情占位符
+
+  // 没有图片配置 → 直接返回占位符
+  if (!f) {
+    return `<div class="${cls}-ph">${emoji}</div>`;
+  }
+
+  // 有图片配置 → 用 <img> + 隐藏的占位符，onerror 只切换显示
+  return `
+    <div style="position:relative; width:100%; height:100%;">
+      <img 
+        class="${cls}" 
+        src="${IMG_BASE}${f}" 
+        alt="" 
+        loading="lazy"
+        onerror="this.style.display='none'; this.parentNode.querySelector('.ph-fallback').style.display='flex';"
+      >
+      <div 
+        class="${cls}-ph ph-fallback" 
+        style="display:none; position:absolute; inset:0; align-items:center; justify-content:center; background:rgba(255,255,255,0.03);"
+      >${emoji}</div>
+    </div>
+  `;
+}
       function cartImgTag(id) {
         const f = imgMap[id],
           p = products.find((x) => x.id == id);
