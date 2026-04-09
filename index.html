@@ -1387,10 +1387,10 @@
                     Select address…
                   </option>
                   <option value="addr1" id="sAddrOpt1">
-                    📍 Address 1 – by 11:00 AM
+                    📍 R Building – by 11:00 AM
                   </option>
                   <option value="addr2" id="sAddrOpt2">
-                    📍 Address 2 – by 4:00 PM
+                    📍 The Aventura - Minto Apartments – by 4:00 PM
                   </option>
                 </select>
               </div>
@@ -1505,10 +1505,10 @@
                   Select address…
                 </option>
                 <option value="addr1" id="mAddrOpt1">
-                  📍 Address 1 – by 11:00 AM
+                  📍 R Building – by 11:00 AM
                 </option>
                 <option value="addr2" id="mAddrOpt2">
-                  📍 Address 2 – by 4:00 PM
+                  📍 The Aventura - Minto Apartments – by 4:00 PM
                 </option>
               </select>
             </div>
@@ -1552,18 +1552,18 @@
       // ── CONFIG ──────────────────────────────────────────────────────────────────
       const APPS_SCRIPT_URL =
         'https://script.google.com/macros/library/d/1FDF37JqOQ_lWArD541w72AWg6lZJCozFKnSib4g4x1ERy-hG1LKJDwrc/2';
-      const IMG_BASE = 'images/';
+      const IMG_BASE = './';
 
       // ── IMAGE MAP ────────────────────────────────────────────────────────────────
       const imgMap = {
         1: 'Tropicana_Orange_Juice_Bottle.jpg',
-        2: null,
+        2: 'Shrimp_Cocktail_Tail_On.jpg',
         3: 'Tim_Hortons_Original_Blend_Coffee.jpg',
         4: 'Kirkland_Signature_Free_Run_Hard_Boiled_Egg.jpg',
         5: 'Sensible_Portions_Garden_Veggie_Straws.jpg',
         6: 'Gala_Apple_Bag.jpg',
         7: 'Healthy_Choice_Greek_Yogurt_Bars.jpg',
-        8: null,
+        8: 'Super_Coffee_Protein_Shake.jpg',
         9: 'Inno_Foods_White_Choc_Blueberry.jpg',
         10: 'Love_Me_Sweet_Mille_Crepe_Cake.jpg',
         11: 'Maison_Perrier_Carbonated_Natural_Spring_Water.jpg',
@@ -1583,22 +1583,22 @@
         25: 'Gala_Apple_Bag.jpg',
         26: 'Sweet_Creations_Palm_Leaves.jpg',
         27: 'Liberté_2_Plain_Yogurt.jpg',
-        28: 'Chapman_s_Vanilla_Ice_Cream.jpg',
+        28: 'Chapmans_Vanilla_Ice_Cream.jpg',
         29: 'Artisan_Baguettes.jpg',
         30: 'Amos_Peelerz_Gummy_Mango.jpg',
         31: 'Frito_Lay_Lunch_Variety_Pack.jpg',
         32: 'Kirkland_Signature_Sparkling_Beverage_Variety_Pack.jpg',
-        33: null,
+        33: 'Le_Chic_Patissier_French_Macarons.jpg',
         34: 'Kirkland_Signature_0_Greek_Yogurt.jpg',
         35: 'Kirkland_Signature_Sparkling_Beverage_Variety_Pack.jpg',
-        36: 'Schaaf_Foods_Golden__Marble_Cakes.jpg',
+        36: 'Schaaf_Foods_Golden_Marble_Cakes.jpg',
         37: 'Cuisine_Adventures_French_Onion_Soup.jpg',
         38: 'HäagenDazs_Vanilla_Almond_Bars.jpg',
         39: 'Natures_Touch_Frozen_Mangoes.jpg',
         40: 'Hot_House_Strawberries.jpg',
         41: 'Organic_Blueberries.jpg',
         42: 'Honeycrisp_Apples.jpg',
-        43: null,
+        43: 'Kirkland_Variety_Donuts.jpg',
         44: 'Brookside_Acai_Dark_Chocolate.jpg',
         45: 'Pepperidge_Farm_Goldfish_Cheddar.jpg',
         46: 'Lotte_Pepero_Assorted.jpg',
@@ -1607,7 +1607,7 @@
         49: 'Casablanca_Dubai_Ice_Cream_Bar.jpg',
         50: 'Island_Way_Assorted_Fruit_Sorbet.jpg',
         51: 'Fuze_Lemon_Iced_Tea.jpg',
-        52: 'Kirkland_Signature_Bacon__Cheese_Sous_Vide_Egg_Bites.jpg',
+        52: 'Kirkland_Signature_Bacon_Cheese_Sous_Vide_Egg_Bites.jpg',
         53: 'Natures_Garden_Yoggies_Mixed_Berry.jpg',
         54: 'Unreal_Dark_Choco_Coconut_Bar.jpg',
         55: 'Copper_Kettle_Pistachio_Clusters.jpg',
@@ -1615,7 +1615,7 @@
         57: 'Langers_Mango_Nectar.jpg',
         58: 'Tomatoes_on_the_Vine.jpg',
         59: 'Grape_Tomatoes.jpg',
-        60: 'TwoBite_Glazed_Cinnamon_Rolls.jpg',
+        60: 'Two_Bite_Glazed_Cinnamon_Rolls.jpg',
         61: 'Treasure_Mills_Banana_Chocolate_Chip.jpg',
         62: 'Bel_Gaufre_Waffles.jpg',
         63: 'Ace_Bakery_Mini_Cheese_Croissant.jpg',
@@ -1630,7 +1630,7 @@
         72: 'Almond_Breeze_Unsweetened_Original_Almond_Milk.jpg',
         73: 'Grown_Right_Orange_Juice.jpg',
         74: 'Blueberries.jpg',
-        75: null,
+        75: 'Portuguese_Custard_Tart.jpg',
         76: 'Kirkland_Signature_Colombian_Coffee.jpg',
         77: 'Kirkland_Signature_Decaffeinated_Coffee.jpg',
         78: 'Kirkland_Signature_Ice_Cream_Bars.jpg',
@@ -1654,7 +1654,7 @@
         96: 'Traditions_Vanilla_Mega_Sandwich.jpg',
         97: 'Perrier_Carbonated_Natural_Spring_Water_Sleek_Cans.jpg',
         98: 'Oasis_100_Orange_Juice.jpg',
-        99: 'RANA_Beef__Short_Rib_Lasagna.jpg',
+        99: 'RANA_Beef_Short_Rib_Lasagna.jpg',
         100: 'Kirkland_Tuxedo_Cake.jpg',
         101: 'Kirkland_Caramel_Smore_Cluster.jpg',
         102: 'Don_Simon_Orange_Juice.jpg',
@@ -1677,7 +1677,7 @@
         119: 'Raspberries.jpg',
         120: 'Sweet_Karoline_Blackberries.jpg',
         121: 'Plums.jpg',
-        122: null,
+        122: 'Seasoned_Rotisserie_Chicken.jpg',
         123: 'Double_Chocolate_Muffins.jpg',
         124: 'Cranberry_Orange_Muffins.jpg',
         125: 'Blueberry_Muffins.jpg',
@@ -1685,10 +1685,10 @@
         127: 'Golden_Pineapple.jpg',
         128: 'Sealtest_35_Whipping_Cream.jpg',
         129: 'Kirkland_Signature_Natural_Spring_Water_Pack.jpg',
-        130: null,
+        130: 'McCafe_Premium_Roast_Coffee.jpg',
         131: 'Swiss_Delice_Dark_Chocolate_72.jpg',
         132: 'bubly_Variety_Pack_Sparkling_Water.jpg',
-        133: 'DOSE_Ginger__Turmeric.jpg',
+        133: 'DOSE_Ginger_Turmeric.jpg',
         134: 'Limoncello_Mascaprone.jpg',
         135: 'Kirkland_Signature_Variety_Snacking_Nuts.jpg',
         136: 'La_Petite_Bretonne_Madeleines_Pure_Butter.jpg',
@@ -1703,7 +1703,7 @@
         145: 'Kirkland_Unsalted_Cashews.jpg',
         146: 'Kirkland_Whole_Cashews.jpg',
         147: 'illy_Fine_Ground_Coffee_Dark_Roast.jpg',
-        148: 'T_G_I_Fridays_Potato_Skins_Cheddar__Bacon.jpg',
+        148: 'TGI_Fridays_Potato_Skins_Cheddar_Bacon.jpg',
         149: 'Synear_Panda_Buns_with_Custard_Filling.jpg',
         150: 'Kraft_Peanut_Butter_Ice_Cream_Bar.jpg',
         151: 'Le_Glacier_Bilboquet_Mango_Sorbet_Bars.jpg',
@@ -1715,7 +1715,7 @@
         157: 'Coke.jpg',
         158: 'Canada_Dry_Ginger_Ale.jpg',
         159: 'Kirkland_Signature_Organic_Soy_Beverage.jpg',
-        160: 'Reser_s_Main_St__Bistro_Baked_Scalloped_Potatoes.jpg',
+        160: 'Resers_Main_St__Bistro_Baked_Scalloped_Potatoes.jpg',
         161: 'Green_Kiwi_Product_of_Greece.jpg',
         162: 'Natrel_10_Dairy_Creamer.jpg',
         163: 'Whole_White_Mushrooms.jpg',
@@ -1734,7 +1734,7 @@
         176: 'Jones_Soda_Fallout_Sunset_Sarsaparilla.jpg',
         177: 'Thats_It_Mini_Probiotic_Fruit_Bars.jpg',
         178: 'Kirkland_Signature_Large_Organic_Eggs.jpg',
-        179: null,
+        179: 'Hons_BBQ_Pork_Bao_Bun_Kit.jpg',
         180: 'OMGI_Almond_Toffee_Clusters.jpg',
         181: 'Green_Valley_Large_Free_Range.jpg',
         182: 'Kirkland_Braided_Apple_Turnovers.jpg',
@@ -3385,12 +3385,12 @@
         lblAddr: { en: 'Address', zh: '地址' },
         addrPH: { en: 'Select address…', zh: '选择地址…' },
         addr1: {
-          en: '📍 Address 1 – Next-day by 11:00 AM',
-          zh: '📍 地址1 – 次日上午11点送达',
+          en: '📍 R Building – Next-day by 11:00 AM',
+          zh: '📍 R Building – 次日上午11点送达',
         },
         addr2: {
-          en: '📍 Address 2 – Next-day by 4:00 PM',
-          zh: '📍 地址2 – 次日下午4点送达',
+          en: '📍 The Aventura - Minto Apartments – Next-day by 4:00 PM',
+          zh: '📍 The Aventura - Minto Apartments – 次日下午4点送达',
         },
         coBtn: { en: 'Place Order', zh: '提交订单' },
         mCartLabel: { en: 'View Cart & Checkout', zh: '查看购物车 & 结算' },
@@ -3490,25 +3490,18 @@
       function dn(p) {
         return lang === 'zh' && nameCN[p.id] ? nameCN[p.id] : p.name;
       }
-      // function imgTag(id, cls) {
-      //   const f = imgMap[id],
-      //     p = products.find((x) => x.id == id);
-      //   const fb = `<div class="${cls}-ph">${catEmoji[p?.cat] || '📦'}</div>`;
-      //   if (!f) return fb;
-      //   return `<img class="${cls}" src="${IMG_BASE}${f}" alt="" loading="lazy" onerror="this.outerHTML='${fb.replace(/'/g, '&#39;')}'">`;
-      // }
       function imgTag(id, cls) {
-  const f = imgMap[id];                    // 你的图片映射
-  const p = products.find((x) => x.id == id);
-  const emoji = catEmoji[p?.cat] || '📦';   // 分类表情占位符
+        const f = imgMap[id]; // 你的图片映射
+        const p = products.find((x) => x.id == id);
+        const emoji = catEmoji[p?.cat] || '📦'; // 分类表情占位符
 
-  // 没有图片配置 → 直接返回占位符
-  if (!f) {
-    return `<div class="${cls}-ph">${emoji}</div>`;
-  }
+        // 没有图片配置 → 直接返回占位符
+        if (!f) {
+          return `<div class="${cls}-ph">${emoji}</div>`;
+        }
 
-  // 有图片配置 → 用 <img> + 隐藏的占位符，onerror 只切换显示
-  return `
+        // 有图片配置 → 用 <img> + 隐藏的占位符，onerror 只切换显示
+        return `
     <div style="position:relative; width:100%; height:100%;">
       <img 
         class="${cls}" 
@@ -3523,7 +3516,7 @@
       >${emoji}</div>
     </div>
   `;
-}
+      }
       function cartImgTag(id) {
         const f = imgMap[id],
           p = products.find((x) => x.id == id);
