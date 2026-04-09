@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
     <title>Next-Day Costco Delivery</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
@@ -420,30 +423,51 @@
         backdrop-filter: blur(8px);
         display: flex;
         flex-direction: column;
+        position: relative; /* needed for ph-fallback absolute child */
       }
       .pcard:hover {
         background: var(--glass2);
         border-color: rgba(255, 255, 255, 0.18);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+      }
+      /* image wrap: fixed height, img fills it, fallback overlays absolutely */
+      .pcard-img-wrap {
+        position: relative;
+        width: 100%;
+        height: 150px;
+        flex-shrink: 0;
+        background: rgba(255, 255, 255, 0.04);
+        overflow: hidden;
+        cursor: pointer; /* click to fullscreen */
       }
       .pcard-img {
         width: 100%;
-        height: 150px;
+        height: 100%;
         object-fit: cover;
-        background: rgba(255, 255, 255, 0.04);
         display: block;
-        flex-shrink: 0;
+        transition: transform 0.25s ease;
+      }
+      .pcard-img-wrap:hover .pcard-img {
+        transform: scale(1.04);
       }
       .pcard-img-ph {
-        width: 100%;
-        height: 150px;
-        background: rgba(255, 255, 255, 0.03);
+        position: absolute;
+        inset: 0;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 42px;
-        flex-shrink: 0;
+        background: rgba(255, 255, 255, 0.03);
+      }
+      /* ph-fallback shown via JS when img errors */
+      .ph-fallback {
+        position: absolute;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.03);
+        font-size: 42px;
       }
       .pcard-body {
         padding: 12px 13px 14px;
@@ -1065,155 +1089,66 @@
         }
       }
 
-      /* ═══════════════════════════════════════
-   RESPONSIVE BREAKPOINTS
-═══════════════════════════════════════ */
-
-      /* TABLET: hide left sidebar, keep cart sidebar */
-      @media (max-width: 1100px) {
-        .page {
-          grid-template-columns: 1fr var(--sidebar);
-        }
-        .cat-sidebar {
-          display: none;
-        }
-        .main {
-          grid-column: 1;
-          border-right: none;
-        }
-        .cart-sidebar {
-          grid-column: 2;
-        }
-        /* show horizontal tab scroll instead */
-        .tab-row {
-          display: flex !important;
-        }
-      }
-
-      /* SMALL TABLET: stack everything, bottom cart */
-      @media (max-width: 768px) {
-        :root {
-          --sidebar: 0px;
-        }
-        .page {
-          grid-template-columns: 1fr;
-          grid-template-rows: auto auto 1fr;
-        }
-        .cat-sidebar {
-          display: none;
-        }
-        .cart-sidebar {
-          display: none;
-        } /* replaced by bottom sheet */
-        .main {
-          grid-column: 1;
-          grid-row: 1;
-          border: none;
-          padding: 16px 12px 100px;
-        }
-        .prod-grid {
-          grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-          gap: 10px;
-        }
-        .pcard-img,
-        .pcard-img-ph {
-          height: 130px;
-        }
-        /* sticky bottom cart bar */
-        .mobile-cart-bar {
-          display: flex !important;
-        }
-        /* header adjustments */
-        .hdr-logo .txt .sub {
-          display: none;
-        }
-        .search-wrap {
-          max-width: 100%;
-        }
-      }
-
-      /* MOBILE: 2 cols min */
-      @media (max-width: 480px) {
-        .hdr-inner {
-          padding: 0 12px;
-          gap: 10px;
-        }
-        .hdr-logo {
-          font-size: 15px;
-        }
-        .hdr-logo .icon {
-          width: 30px;
-          height: 30px;
-          font-size: 14px;
-        }
-        .main {
-          padding: 12px 10px 100px;
-        }
-        .prod-grid {
-          grid-template-columns: repeat(2, 1fr);
-          gap: 8px;
-        }
-        .pcard-img,
-        .pcard-img-ph {
-          height: 120px;
-        }
-        .pcard-body {
-          padding: 9px 10px 11px;
-        }
-        .pcard-name {
-          font-size: 12px;
-          min-height: 34px;
-        }
-        .pcard-price {
-          font-size: 15px;
-        }
-      }
-
-      /* WIDE: bigger grid */
-      @media (min-width: 1300px) {
-        .prod-grid {
-          grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-        }
-      }
-
-      /* ── TAB ROW (visible on tablet) ── */
+      /* ══════════════════════════════════════════════════════
+         TAB ROW  –  standalone sticky bar (outside .page)
+      ══════════════════════════════════════════════════════ */
       .tab-row {
-        display: none; /* shown on tablet via media query above */
+        /* Hidden on desktop (left sidebar handles cats) */
+        display: none;
+        position: sticky;
+        top: var(--hh);
+        z-index: 98; /* above page content, below header */
+        width: 100%;
         overflow-x: auto;
+        overflow-y: hidden; /* prevent vertical bleed */
+        -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
-        padding: 0 20px 14px;
         gap: 7px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        margin-bottom: 16px;
+        padding: 9px 14px 9px;
+        background: rgba(10, 10, 15, 0.96);
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        /* flex but NO flex-wrap so tabs stay on one line */
+        flex-wrap: nowrap;
+        align-items: center;
+        box-sizing: border-box;
       }
       .tab-row::-webkit-scrollbar {
         display: none;
       }
       .tab-row .tab {
-        background: var(--glass);
-        border: 1px solid var(--glassB);
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 500;
-        padding: 6px 14px;
-        border-radius: 50px;
-        cursor: pointer;
+        flex: 0 0 auto; /* NEVER shrink or grow */
         white-space: nowrap;
-        transition: all 0.18s;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 13px;
+        font-weight: 500;
         font-family: var(--font);
-        flex-shrink: 0;
+        cursor: pointer;
+        transition: all 0.18s;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        color: rgba(255, 255, 255, 0.65);
       }
       .tab-row .tab:hover {
-        background: var(--glass2);
+        background: rgba(255, 255, 255, 0.13);
         color: #fff;
+        border-color: rgba(255, 255, 255, 0.22);
       }
       .tab-row .tab.active {
-        background: rgba(255, 255, 255, 0.16);
-        border-color: rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(255, 255, 255, 0.32);
         color: #fff;
+        font-weight: 600;
       }
 
-      /* ── MOBILE CART BAR ── */
+      /* ══════════════════════════════════════════════════════
+         MOBILE CART BAR
+      ══════════════════════════════════════════════════════ */
       .mobile-cart-bar {
         display: none;
         position: fixed;
@@ -1221,9 +1156,10 @@
         left: 0;
         right: 0;
         z-index: 200;
-        padding: 10px 16px;
-        background: rgba(10, 10, 20, 0.92);
-        backdrop-filter: blur(16px);
+        padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+        background: rgba(10, 10, 20, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
       .mobile-cart-bar button {
@@ -1245,6 +1181,253 @@
       }
       .mobile-cart-bar button:hover {
         background: rgba(255, 255, 255, 0.2);
+      }
+
+      /* ══════════════════════════════════════════════════════
+         RESPONSIVE BREAKPOINTS
+      ══════════════════════════════════════════════════════ */
+
+      /* ── ≤1100px TABLET: hide left-cat sidebar, show tab row ── */
+      @media (max-width: 1100px) {
+        .page {
+          grid-template-columns: 1fr var(--sidebar);
+        }
+        .cat-sidebar {
+          display: none;
+        }
+        .main {
+          grid-column: 1;
+          border-right: none;
+        }
+        .cart-sidebar {
+          grid-column: 2;
+        }
+        /* Show sticky tab row */
+        .tab-row {
+          display: flex;
+        }
+      }
+
+      /* ── ≤768px SMALL TABLET / LARGE PHONE ── */
+      @media (max-width: 768px) {
+        :root {
+          --sidebar: 0px;
+        }
+        .page {
+          grid-template-columns: 1fr;
+        }
+        .cat-sidebar,
+        .cart-sidebar {
+          display: none;
+        }
+        .main {
+          padding: 0 0 110px;
+        }
+        /* tab row already sticky via base; show it */
+        .tab-row {
+          display: flex;
+          padding: 9px 12px 8px;
+        }
+        .tab-row .tab {
+          padding: 7px 14px;
+          font-size: 12.5px;
+        }
+        /* 2-col product grid */
+        .prod-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 10px;
+          padding: 0 12px;
+        }
+        .pcard-img-wrap {
+          height: 130px;
+        }
+        .main-header {
+          padding: 10px 12px 8px;
+          margin-bottom: 0;
+        }
+        .mobile-cart-bar {
+          display: flex;
+        }
+      }
+
+      /* ── ≤480px PHONE ── */
+      @media (max-width: 480px) {
+        :root {
+          --sidebar: 0px;
+        }
+        /* compact header */
+        .hdr-inner {
+          padding: 0 10px;
+          gap: 8px;
+        }
+        .hdr-logo .txt em {
+          display: none;
+        }
+        /* lang toggle stays visible on mobile */
+        /* tab row */
+        .tab-row {
+          display: flex;
+          padding: 8px 10px 7px;
+          gap: 6px;
+        }
+        .tab-row .tab {
+          padding: 7px 12px;
+          font-size: 12px;
+        }
+        /* main & grid */
+        .main {
+          padding: 0 0 120px;
+        }
+        .main-header {
+          padding: 8px 10px 6px;
+          margin-bottom: 0;
+        }
+        .prod-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 8px;
+          padding: 0 8px;
+        }
+        /* card */
+        .pcard {
+          border-radius: 12px;
+        }
+        .pcard-img-wrap {
+          height: 115px;
+        }
+        .pcard-body {
+          padding: 8px 9px 10px;
+        }
+        .pcard-cat {
+          font-size: 9px;
+          margin-bottom: 3px;
+        }
+        .pcard-name {
+          font-size: 11.5px;
+          min-height: 32px;
+        }
+        .pcard-spec {
+          font-size: 10px;
+          margin-bottom: 7px;
+        }
+        .pcard-price {
+          font-size: 14px;
+        }
+        /* add control */
+        .add-ctrl .plus-btn {
+          width: 28px;
+          height: 28px;
+          font-size: 18px;
+          border-radius: 8px;
+        }
+        .qty-group .qb {
+          width: 25px;
+          height: 28px;
+          font-size: 14px;
+        }
+        .qty-group .qv {
+          min-width: 20px;
+          font-size: 12px;
+        }
+        .mobile-cart-bar {
+          display: flex;
+        }
+      }
+
+      /* ── ≤360px TINY PHONE ── */
+      @media (max-width: 360px) {
+        .prod-grid {
+          gap: 6px;
+          padding: 0 6px;
+        }
+        .pcard-img-wrap {
+          height: 100px;
+        }
+        .tab-row {
+          padding: 7px 8px 6px;
+          gap: 5px;
+        }
+        .tab-row .tab {
+          padding: 6px 10px;
+          font-size: 11.5px;
+        }
+      }
+      /* ── IMAGE MODAL ── */
+      #imageModal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: rgba(0, 0, 0, 0.92);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+      #imageModal.show {
+        display: flex;
+        animation: mFadeIn 0.2s ease;
+      }
+      @keyframes mFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .modal-content {
+        position: relative;
+        max-width: min(92vw, 600px);
+        max-height: 88vh;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #111118;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
+        animation: mSlideUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      @keyframes mSlideUp {
+        from {
+          transform: scale(0.88);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .modal-content img {
+        display: block;
+        max-width: 100%;
+        max-height: 82vh;
+        object-fit: contain;
+        border-radius: 18px;
+      }
+      .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.18s;
+        backdrop-filter: blur(8px);
+      }
+      .modal-close:hover {
+        background: rgba(255, 77, 109, 0.7);
       }
     </style>
   </head>
@@ -1276,10 +1459,7 @@
           <input type="text" id="searchInput" placeholder="Search products…" />
         </div>
         <div class="hdr-right">
-          <button class="lang-chip active" id="btnEN" onclick="setLang('en')">
-            EN
-          </button>
-          <button class="lang-chip" id="btnZH" onclick="setLang('zh')">
+          <button class="lang-chip" id="langToggle" onclick="toggleLang()">
             中文
           </button>
           <button class="cart-btn" id="cartBtnTop" onclick="openSheet()">
@@ -1304,6 +1484,9 @@
       </div>
     </header>
 
+    <!-- STICKY TAB ROW: lives outside .page so position:sticky works reliably -->
+    <div class="tab-row" id="tabRow"></div>
+
     <!-- PAGE LAYOUT -->
     <div class="page">
       <!-- LEFT SIDEBAR: categories -->
@@ -1311,8 +1494,6 @@
 
       <!-- MAIN CONTENT -->
       <main class="main">
-        <!-- tab row for tablet -->
-        <div class="tab-row" id="tabRow"></div>
         <div class="main-header">
           <div>
             <span class="main-title" id="mainTitle">All Products</span>
@@ -1552,7 +1733,7 @@
       // ── CONFIG ──────────────────────────────────────────────────────────────────
       const APPS_SCRIPT_URL =
         'https://script.google.com/macros/library/d/1FDF37JqOQ_lWArD541w72AWg6lZJCozFKnSib4g4x1ERy-hG1LKJDwrc/2';
-      const IMG_BASE = 'images/';
+      const IMG_BASE = './';
 
       // ── IMAGE MAP ────────────────────────────────────────────────────────────────
       const imgMap = {
@@ -3431,10 +3612,9 @@
       }
 
       // ── LANG ──────────────────────────────────────────────────────────────────────
-      function setLang(l) {
-        lang = l;
-        $('btnEN').classList.toggle('active', l === 'en');
-        $('btnZH').classList.toggle('active', l === 'zh');
+      function toggleLang() {
+        lang = lang === 'en' ? 'zh' : 'en';
+        $('langToggle').textContent = lang === 'en' ? '中文' : 'EN';
         applyStaticStrings();
         renderSideCats();
         renderTabRow();
@@ -3491,31 +3671,31 @@
         return lang === 'zh' && nameCN[p.id] ? nameCN[p.id] : p.name;
       }
       function imgTag(id, cls) {
-        const f = imgMap[id]; // 你的图片映射
+        const f = imgMap[id];
         const p = products.find((x) => x.id == id);
-        const emoji = catEmoji[p?.cat] || '📦'; // 分类表情占位符
+        const emoji = catEmoji[p?.cat] || '📦';
+        const name = p ? dn(p) : '';
 
-        // 没有图片配置 → 直接返回占位符
-        if (!f) {
-          return `<div class="${cls}-ph">${emoji}</div>`;
+        if (cls === 'pcard-img') {
+          // Always wrap in .pcard-img-wrap for consistent height + click-to-fullscreen
+          if (!f) {
+            return `<div class="pcard-img-wrap" onclick="showFullImage(null,'${name.replace(/'/g, "\'")}','${emoji}')">
+              <div class="pcard-img-ph">${emoji}</div>
+            </div>`;
+          }
+          const src = IMG_BASE + f;
+          return `<div class="pcard-img-wrap" onclick="showFullImage('${src}','${name.replace(/'/g, "\'")}','${emoji}')">
+            <img class="pcard-img" src="${src}" alt="${name.replace(/"/g, '&quot;')}" loading="lazy"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="ph-fallback">${emoji}</div>
+          </div>`;
         }
 
-        // 有图片配置 → 用 <img> + 隐藏的占位符，onerror 只切换显示
-        return `
-    <div style="position:relative; width:100%; height:100%;">
-      <img 
-        class="${cls}" 
-        src="${IMG_BASE}${f}" 
-        alt="" 
-        loading="lazy"
-        onerror="this.style.display='none'; this.parentNode.querySelector('.ph-fallback').style.display='flex';"
-      >
-      <div 
-        class="${cls}-ph ph-fallback" 
-        style="display:none; position:absolute; inset:0; align-items:center; justify-content:center; background:rgba(255,255,255,0.03);"
-      >${emoji}</div>
-    </div>
-  `;
+        // For other uses (cart thumbnail etc.) keep simple
+        if (!f) return `<div class="${cls}-ph">${emoji}</div>`;
+        const src = IMG_BASE + f;
+        return `<img class="${cls}" src="${src}" alt="" loading="lazy"
+          onerror="this.outerHTML='<div class=\'${cls}-ph\'>${emoji}</div>'">`;
       }
       function cartImgTag(id) {
         const f = imgMap[id],
@@ -3918,6 +4098,61 @@
       renderTabRow();
       renderProducts();
       renderCart();
+      // ── 全屏查看完整图片 ──
+      function showFullImage(src, alt, emoji) {
+        const modal = document.getElementById('imageModal');
+        const imgEl = document.getElementById('modalFullImage');
+        const emojiEl = document.getElementById('modalEmoji');
+        if (src) {
+          imgEl.src = src;
+          imgEl.alt = alt || '';
+          imgEl.style.display = '';
+          if (emojiEl) emojiEl.style.display = 'none';
+        } else {
+          imgEl.style.display = 'none';
+          imgEl.src = '';
+          if (emojiEl) {
+            emojiEl.textContent = emoji || '📦';
+            emojiEl.style.display = 'flex';
+          }
+        }
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeFullImage() {
+        const modal = document.getElementById('imageModal');
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+        // 防止内存占用
+        setTimeout(() => {
+          document.getElementById('modalFullImage').src = '';
+        }, 300);
+      }
+
+      // 支持 ESC 键关闭
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          const modal = document.getElementById('imageModal');
+          if (modal.classList.contains('show')) closeFullImage();
+        }
+      });
     </script>
+    <!-- 全屏图片弹窗 -->
+    <div id="imageModal" onclick="if (event.target === this) closeFullImage();">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeFullImage()">✕</button>
+        <img id="modalFullImage" src="" alt="" />
+        <div
+          id="modalEmoji"
+          style="
+            display: none;
+            font-size: 80px;
+            align-items: center;
+            justify-content: center;
+          "
+        ></div>
+      </div>
+    </div>
   </body>
 </html>
