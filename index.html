@@ -749,37 +749,98 @@
         border-top: 1px solid rgba(255, 255, 255, 0.07);
         background: var(--bg2);
       }
-      .prog-wrap {
-        margin-bottom: 12px;
-      }
+      /* ── TWO-STAGE PROGRESS BAR ── */
+      .prog-wrap { margin-bottom: 12px; }
+
       .prog-meta {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         font-size: 11px;
         color: var(--muted);
-        margin-bottom: 5px;
-        flex-wrap: wrap;
-        gap: 3px;
+        margin-bottom: 6px;
+        gap: 4px;
       }
-      .prog-bar {
-        height: 4px;
-        background: rgba(255, 255, 255, 0.09);
+      .prog-stage-label {
+        font-weight: 600;
+        font-size: 10.5px;
+        white-space: nowrap;
+      }
+      .prog-stage-label.stage-order  { color: var(--gold); }
+      .prog-stage-label.stage-free   { color: #60a5fa; }
+      .prog-stage-label.stage-done   { color: var(--green); }
+
+      /* track: two segments side-by-side */
+      .prog-track {
+        display: flex;
+        gap: 3px;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+      .prog-seg {
+        height: 5px;
         border-radius: 10px;
         overflow: hidden;
+        background: rgba(255,255,255,.09);
+        position: relative;
+        flex: 1;
       }
-      .prog-fill {
+      /* segment 1 = order threshold ($0-$20) */
+      .prog-seg-1 { flex: 0 0 calc(50% - 1.5px); }
+      /* segment 2 = free delivery threshold ($20-$40) */
+      .prog-seg-2 { flex: 0 0 calc(50% - 1.5px); }
+
+      .prog-seg-fill {
+        position: absolute;
+        inset: 0;
         height: 100%;
         border-radius: 10px;
-        background: linear-gradient(90deg, var(--purple), var(--green));
-        transition: width 0.4s ease;
+        transition: width .45s cubic-bezier(.4,0,.2,1);
+        width: 0%;
       }
-      .free-tag {
+      /* stage-1 fill: warm orange→gold */
+      .prog-seg-1 .prog-seg-fill {
+        background: linear-gradient(90deg, #f97316, var(--gold));
+      }
+      /* stage-2 fill: blue→green */
+      .prog-seg-2 .prog-seg-fill {
+        background: linear-gradient(90deg, #3b82f6, var(--green));
+      }
+
+      /* milestone dot between segments */
+      .prog-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        border: 1.5px solid rgba(255,255,255,.2);
+        background: rgba(255,255,255,.08);
+        transition: all .3s;
+      }
+      .prog-dot.reached {
+        background: var(--gold);
+        border-color: var(--gold);
+        box-shadow: 0 0 6px rgba(251,191,36,.5);
+      }
+
+      /* milestone labels below the bar */
+      .prog-milestones {
+        display: flex;
+        justify-content: space-between;
         font-size: 10px;
-        font-weight: 700;
+        color: var(--muted2);
+        margin-top: 4px;
+        padding: 0 1px;
+      }
+      .prog-milestones span:nth-child(2) { text-align: center; }
+      .prog-milestones span:last-child  { text-align: right; }
+      .prog-milestones .m-reached { color: var(--gold); font-weight: 600; }
+      .prog-milestones .m-done    { color: var(--green); font-weight: 600; }
+
+      .free-tag {
+        font-size: 10px; font-weight: 700;
         color: var(--green);
-        background: rgba(74, 222, 128, 0.14);
-        padding: 2px 7px;
-        border-radius: 8px;
+        background: rgba(74,222,128,.14);
+        padding: 2px 7px; border-radius: 8px;
       }
       .sum-row {
         display: flex;
@@ -1412,13 +1473,24 @@
           </div>
           <div class="cart-items-wrap" id="sCartItems"></div>
           <div class="cart-foot" id="sCartFoot" style="display: none">
-            <div class="prog-wrap">
+            <div class="prog-wrap" id="sProgWrap">
               <div class="prog-meta">
-                <span id="sProgLbl">Free delivery progress</span>
+                <span class="prog-stage-label" id="sProgLbl"></span>
                 <span id="sProgAmt"></span>
               </div>
-              <div class="prog-bar">
-                <div class="prog-fill" id="sProgFill" style="width: 0%"></div>
+              <div class="prog-track">
+                <div class="prog-seg prog-seg-1">
+                  <div class="prog-seg-fill" id="sProgFill1"></div>
+                </div>
+                <div class="prog-dot" id="sProgDot"></div>
+                <div class="prog-seg prog-seg-2">
+                  <div class="prog-seg-fill" id="sProgFill2"></div>
+                </div>
+              </div>
+              <div class="prog-milestones">
+                <span>$0</span>
+                <span id="sProgM20">$20</span>
+                <span id="sProgM40">$40</span>
               </div>
             </div>
             <div class="sum-row">
@@ -1525,13 +1597,24 @@
       <div id="sheetMain">
         <div id="mCartItems" style="padding: 6px 0"></div>
         <div id="mSummaryWrap" style="display: none; padding: 0 16px 20px">
-          <div class="prog-wrap" style="margin-top: 10px">
+          <div class="prog-wrap" id="mProgWrap" style="margin-top: 10px">
             <div class="prog-meta">
-              <span id="mProgLbl">Free delivery progress</span
-              ><span id="mProgAmt"></span>
+              <span class="prog-stage-label" id="mProgLbl"></span>
+              <span id="mProgAmt"></span>
             </div>
-            <div class="prog-bar">
-              <div class="prog-fill" id="mProgFill" style="width: 0%"></div>
+            <div class="prog-track">
+              <div class="prog-seg prog-seg-1">
+                <div class="prog-seg-fill" id="mProgFill1"></div>
+              </div>
+              <div class="prog-dot" id="mProgDot"></div>
+              <div class="prog-seg prog-seg-2">
+                <div class="prog-seg-fill" id="mProgFill2"></div>
+              </div>
+            </div>
+            <div class="prog-milestones">
+              <span>$0</span>
+              <span id="mProgM20">$20</span>
+              <span id="mProgM40">$40</span>
             </div>
           </div>
           <div
@@ -3440,7 +3523,7 @@
         sCartTitle: { en: 'My Cart', zh: '我的购物车' },
         mSheetTitle: { en: 'My Cart', zh: '我的购物车' },
         emptyCart: { en: 'Your cart is empty', zh: '购物车是空的' },
-        progLbl: { en: 'Free delivery progress', zh: '距免运费' },
+        progLbl: { en: 'Order progress', zh: '下单进度' },   /* dynamic, overridden in JS */
         subtotal: { en: 'Subtotal', zh: '小计' },
         delivery: { en: 'Delivery', zh: '配送费' },
         total: { en: 'Total', zh: '合计' },
@@ -3772,19 +3855,60 @@
           // show summary
           const sw = $(p === 's' ? 'sCartFoot' : swId);
           if (sw) sw.style.display = '';
-          // progress
-          const FREE = 40,
-            MIN = 20,
-            FEE = 5;
-          const pct = Math.min((sub / FREE) * 100, 100);
-          const progFill = $(p + 'ProgFill');
-          if (progFill) progFill.style.width = pct + '%';
-          const progAmt = $(p + 'ProgAmt');
-          if (progAmt)
-            progAmt.innerHTML =
-              sub >= FREE
-                ? `<span class="free-tag">${lang === 'zh' ? '已免运费' : 'Free!'}</span>`
-                : `$${(FREE - sub).toFixed(2)} ${lang === 'zh' ? '即可免运费' : 'to free'}`;
+          // ── Two-stage progress bar ──
+          const FREE = 40, MIN = 20, FEE = 5;
+
+          const fill1  = $(p + 'ProgFill1');
+          const fill2  = $(p + 'ProgFill2');
+          const dot    = $(p + 'ProgDot');
+          const lbl    = $(p + 'ProgLbl');
+          const amt    = $(p + 'ProgAmt');
+          const m20    = $(p + 'ProgM20');
+          const m40    = $(p + 'ProgM40');
+
+          if (sub < MIN) {
+            // Stage 1: 0 → $20  (order threshold)
+            const pct1 = (sub / MIN) * 100;
+            if (fill1) fill1.style.width = pct1 + '%';
+            if (fill2) fill2.style.width = '0%';
+            if (dot)   { dot.classList.remove('reached'); }
+            if (lbl)   {
+              lbl.textContent = lang === 'zh' ? '下单进度' : 'Order progress';
+              lbl.className   = 'prog-stage-label stage-order';
+            }
+            if (amt)   amt.textContent = lang === 'zh'
+              ? `还差 $${(MIN - sub).toFixed(2)} 可下单`
+              : `$${(MIN - sub).toFixed(2)} to place order`;
+            if (m20)   m20.className = '';
+            if (m40)   m40.className = '';
+          } else if (sub < FREE) {
+            // Stage 2: $20 → $40  (free delivery threshold)
+            const pct2 = ((sub - MIN) / (FREE - MIN)) * 100;
+            if (fill1) fill1.style.width = '100%';
+            if (fill2) fill2.style.width = pct2 + '%';
+            if (dot)   dot.classList.add('reached');
+            if (lbl)   {
+              lbl.textContent = lang === 'zh' ? '免运费进度' : 'Free delivery';
+              lbl.className   = 'prog-stage-label stage-free';
+            }
+            if (amt)   amt.textContent = lang === 'zh'
+              ? `再加 $${(FREE - sub).toFixed(2)} 免运费`
+              : `$${(FREE - sub).toFixed(2)} to free delivery`;
+            if (m20)   m20.className = 'm-reached';
+            if (m40)   m40.className = '';
+          } else {
+            // Done: free delivery unlocked
+            if (fill1) fill1.style.width = '100%';
+            if (fill2) fill2.style.width = '100%';
+            if (dot)   dot.classList.add('reached');
+            if (lbl)   {
+              lbl.textContent = lang === 'zh' ? '🎉 免运费已解锁' : '🎉 Free delivery!';
+              lbl.className   = 'prog-stage-label stage-done';
+            }
+            if (amt)   amt.innerHTML = `<span class="free-tag">${lang === 'zh' ? '已免运费' : 'Free!'}</span>`;
+            if (m20)   m20.className = 'm-reached';
+            if (m40)   m40.className = 'm-done';
+          }
           // totals
           let dv = 0,
             dvH = '';
